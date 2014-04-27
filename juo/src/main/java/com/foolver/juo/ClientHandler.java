@@ -1,6 +1,5 @@
 package com.foolver.juo;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,7 +12,6 @@ import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.processors.PacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.dispatcher.PacketProcessorDispatcher;
-import com.foolver.juo.packetHandling.packets.response.DisconnectNotificationPacket;
 import com.foolver.juo.packetHandling.request2packet.RequestDispatcher;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
 import com.foolver.juo.util.ByteUtil;
@@ -22,15 +20,11 @@ public class ClientHandler implements Runnable {
 
   private static final Logger log = LoggerFactory.getLogger(ClientHandler.class);
 
-  private static final long THREAD_SLEEP_WAITING_FOR_DATA_IN_MILLIS = 250;
-  private static final long CLIENT_TIMOUT_IN_MILLIS = 60000;
-
   private Socket client;
   private InputStream is;
   private OutputStream os;
   private RequestDispatcher requestDispatcher;
   private PacketProcessorDispatcher packetProcessorDispatcher;
-  private long lastByteReceivedInMillis = 0;
 
   public ClientHandler(Socket client, RequestDispatcher packetDispatcher,
       PacketProcessorDispatcher packetProcessorDispatcher) {
@@ -42,7 +36,7 @@ public class ClientHandler implements Runnable {
 
   private void setupStreams(Socket client) {
     try {
-      is = new BufferedInputStream(client.getInputStream());
+      is = client.getInputStream();
       os = client.getOutputStream();
     } catch (IOException e) {
       log.error("unable to get stream for the client", e);
@@ -53,7 +47,6 @@ public class ClientHandler implements Runnable {
     try {
       skeepSeedPacket();
       while (!threadIsInterrupted()) {
-        handleClientTimeoutException();
         readInputAndWriteOutput();
       }
     } catch (IOException e) {
@@ -79,31 +72,12 @@ public class ClientHandler implements Runnable {
     }
   }
 
-  private void handleClientTimeoutException() throws IOException, PacketHandlingException {
-    try {
-      while (is.available() == 0) {
-        long now = System.currentTimeMillis();
-        if (lastByteReceivedInMillis == 0) {
-          lastByteReceivedInMillis = now;
-        } else {
-          if (now > lastByteReceivedInMillis + CLIENT_TIMOUT_IN_MILLIS) {
-            writeAndFlushTheResponsePacket(new DisconnectNotificationPacket());
-            throw new PacketHandlingException("client timeout..");
-          }
-        }
-        Thread.sleep(THREAD_SLEEP_WAITING_FOR_DATA_IN_MILLIS);
-      }
-      lastByteReceivedInMillis = 0;
-    } catch (InterruptedException e) {
-      throw new PacketHandlingException("problems sleeping the thread", e);
-    }
-  }
-
   private void skeepSeedPacket() throws IOException {
     is.skip(4);
   }
 
   private void killThread() {
+    log.info("killing the thread");
     Thread.currentThread().interrupt();
   }
 
@@ -111,10 +85,12 @@ public class ClientHandler implements Runnable {
     return packetId != (byte) 0x00;
   }
 
-  private byte readPacketId() throws IOException {
+  private byte readPacketId() throws IOException, PacketHandlingException {
     byte[] packetId = new byte[1];
     is.read(packetId);
-    log.info(String.format("received packet: %s", ByteUtil.getPrintable(packetId)));
+    if (packetId[0] == 0) {
+      throw new PacketHandlingException("connection closed, the thread will be killed..");
+    }
     return packetId[0];
   }
 

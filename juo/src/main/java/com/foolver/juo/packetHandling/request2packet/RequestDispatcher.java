@@ -11,9 +11,12 @@ import com.foolver.juo.packetHandling.request2packet.handlers.ClientSpyHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.DeleteCharacterHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.GameServerLoginHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.GraphicalEffectHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.LoadAreaHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.LoadAreaRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.LoginCharacterHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.LoginRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.MoveRequestHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.PingMessageHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RestartVersionHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SelectServerHandler;
@@ -43,6 +46,9 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0x02, new MoveRequestHandler());
     requestHandlers.put((byte) 0xAD, new SpeechRequestHandler());
     requestHandlers.put((byte) 0xB6, new SendHelpTipRequestHandler());
+    requestHandlers.put((byte) 0x63, new LoadAreaHandler());
+    requestHandlers.put((byte) 0x64, new LoadAreaRequestHandler());
+    requestHandlers.put((byte) 0x73, new PingMessageHandler());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {
