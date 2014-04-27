@@ -14,7 +14,7 @@ public class UnkownRequestHandler extends AbstractRequestHandler<EmptyPacket> {
   @Override
   public EmptyPacket handle(InputStream is) {
     log.warn("default request handler in action, this means that a packet handler is missed");
-    return new EmptyPacket();
+    return new EmptyPacket();    
   }
 
 }

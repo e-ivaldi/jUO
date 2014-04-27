@@ -1,6 +1,5 @@
 package com.foolver.juo.packetHandling.request2packet.handlers;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
@@ -10,23 +9,12 @@ public class DeleteCharacterHandler extends AbstractRequestHandler<DeleteCharact
 
   @Override
   public DeleteCharacterPacket handle(InputStream is) throws PacketHandlingException {
-
-    String password;
-    int charIndex;
-    int clientIp;
-
-    try {
-
-      password = getFixedSizeStringFromInputStream(is, 30);
-      charIndex = getIntFromInputStream(is);
-      clientIp = getIntFromInputStream(is);
-
-    } catch (IOException e) {
-      throw new PacketHandlingException(String.format("unable to handler packet %s", this.getClass().getSimpleName()),
-          e);
-    }
-
-    return new DeleteCharacterPacket(password, charIndex, clientIp);
+    return this.execute(() -> {
+      String password = getFixedSizeStringFromInputStream(is, 30);
+      int charIndex = getIntFromInputStream(is);
+      int clientIp = getIntFromInputStream(is);
+      return new DeleteCharacterPacket(password, charIndex, clientIp);
+    });
 
   }
 

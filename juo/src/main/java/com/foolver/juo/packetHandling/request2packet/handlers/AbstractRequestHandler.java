@@ -3,6 +3,7 @@ package com.foolver.juo.packetHandling.request2packet.handlers;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.Packet;
 
 public abstract class AbstractRequestHandler<P extends Packet> implements RequestHandler<P> {
@@ -34,6 +35,20 @@ public abstract class AbstractRequestHandler<P extends Packet> implements Reques
     byte[] buf = new byte[size];
     is.read(buf, 0, size);
     return buf;
+  }
+  
+  protected P execute(StreamReader<P> streamReader) throws PacketHandlingException{
+    try {
+      return (P) streamReader.execute();
+    } catch (IOException e) {
+      throw new PacketHandlingException(String.format("unable to handler packet %s", this.getClass().getSimpleName()),
+          e);
+    }
+  }
+
+  @FunctionalInterface
+  public interface StreamReader<P>{
+    P execute() throws IOException;
   }
 
 }

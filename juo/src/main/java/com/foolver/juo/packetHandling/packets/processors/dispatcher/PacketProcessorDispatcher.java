@@ -19,6 +19,7 @@ import com.foolver.juo.packetHandling.packets.processors.PacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.RestartVersionPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.SelectServerPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.ServerListRemoveEntryPacketProcessor;
+import com.foolver.juo.packetHandling.packets.processors.SpeechRequestPacketProcessor;
 import com.foolver.juo.packetHandling.packets.request.DeleteCharacterPacket;
 import com.foolver.juo.packetHandling.packets.request.GameServerLoginPacket;
 import com.foolver.juo.packetHandling.packets.request.GraphicalEffectPacket;
@@ -28,6 +29,7 @@ import com.foolver.juo.packetHandling.packets.request.MoveRequestPacket;
 import com.foolver.juo.packetHandling.packets.request.RestartVersionPacket;
 import com.foolver.juo.packetHandling.packets.request.SelectServerPacket;
 import com.foolver.juo.packetHandling.packets.request.ServerListRemoveEntryPacket;
+import com.foolver.juo.packetHandling.packets.request.SpeechRequestPacket;
 import com.foolver.juo.packetHandling.packets.response.EmptyPacket;
 
 public class PacketProcessorDispatcher {
@@ -46,6 +48,7 @@ public class PacketProcessorDispatcher {
     packetProcessors.put(LoginCharacterPacket.class, new LoginCharacterPacketProcessor());
     packetProcessors.put(DeleteCharacterPacket.class, new DeleteCharacterPacketProcessor());
     packetProcessors.put(MoveRequestPacket.class, new MoveRequestPacketProcessor());
+    packetProcessors.put(SpeechRequestPacket.class, new SpeechRequestPacketProcessor());
   }
 
   @SuppressWarnings("rawtypes")

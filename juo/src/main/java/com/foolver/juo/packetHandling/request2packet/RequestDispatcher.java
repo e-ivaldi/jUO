@@ -17,9 +17,11 @@ import com.foolver.juo.packetHandling.request2packet.handlers.MoveRequestHandler
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RestartVersionHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SelectServerHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.SendHelpTipRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.ServerListRemoveEntryHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SpeechRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.UnkownRequestHandler;
+import com.foolver.juo.util.ByteUtil;
 
 public class RequestDispatcher {
 
@@ -27,7 +29,7 @@ public class RequestDispatcher {
   private static final Map<Byte, RequestHandler<? extends Packet>> requestHandlers = new HashMap<>();
 
   private static final RequestHandler<? extends Packet> defaultHandler = new UnkownRequestHandler();
-  
+
   public RequestDispatcher() {
     requestHandlers.put((byte) 0x80, new LoginRequestHandler());
     requestHandlers.put((byte) 0x60, new ServerListRemoveEntryHandler());
@@ -40,12 +42,13 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0x83, new DeleteCharacterHandler());
     requestHandlers.put((byte) 0x02, new MoveRequestHandler());
     requestHandlers.put((byte) 0xAD, new SpeechRequestHandler());
+    requestHandlers.put((byte) 0xB6, new SendHelpTipRequestHandler());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {
     RequestHandler<? extends Packet> handler = requestHandlers.get(packetId);
     if (handler == null) {
-      log.error(String.format("unable to find a request handler for the packetId %s", packetId));
+      log.error(String.format("unable to find a request handler for the packetId %s", ByteUtil.getPrintable(packetId)));
       handler = defaultHandler;
     }
     return handler;

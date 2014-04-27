@@ -7,11 +7,11 @@ public class CharLocaleAndBodyDebugPacket extends AbstractResponsePacket {
     buffer.put((byte) 0x1B); // draw game player
     buffer.putInt(0); // creatureId
     buffer.putInt(0); // unknown
-    buffer.putShort((short) 0); // bodyType
-    buffer.putShort((short) 1000); // xLoc
-    buffer.putShort((short) 1000); // yLoc
+    buffer.putShort((short) 2); // bodyType
+    buffer.putShort((short) 2000); // xLoc
+    buffer.putShort((short) 4980); // yLoc
     buffer.put((byte) 0x00); // unknown
-    buffer.put((byte) 0x10); // zloc
+    buffer.put((byte) 0x00); // zloc
     buffer.put((byte) 0x00); // direction
     buffer.putInt(0); // unknown
     buffer.putInt(0); // unknown

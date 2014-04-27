@@ -1,18 +1,20 @@
 package com.foolver.juo.packetHandling.packets.request;
 
+import com.foolver.juo.packetHandling.packets.utils.Direction;
+
 public class MoveRequestPacket extends AbstractRequestPacket {
 
-  byte direction;
+  Direction direction;
   byte sequenceNumber;
   int fastWalkPreventionKey;
 
-  public MoveRequestPacket(byte direction, byte sequenceNumber, int fastWalkPreventionKey) {
+  public MoveRequestPacket(Direction direction, byte sequenceNumber, int fastWalkPreventionKey) {
     this.direction = direction;
     this.sequenceNumber = sequenceNumber;
     this.fastWalkPreventionKey = fastWalkPreventionKey;
   }
 
-  public byte getDirection() {
+  public Direction getDirection() {
     return direction;
   }
 

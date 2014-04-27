@@ -2,6 +2,7 @@ package com.foolver.juo;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -25,7 +26,7 @@ public class ClientHandler implements Runnable {
   private static final long CLIENT_TIMOUT_IN_MILLIS = 60000;
 
   private Socket client;
-  private BufferedInputStream is;
+  private InputStream is;
   private OutputStream os;
   private RequestDispatcher requestDispatcher;
   private PacketProcessorDispatcher packetProcessorDispatcher;
@@ -62,6 +63,19 @@ public class ClientHandler implements Runnable {
     } finally {
       log.info("closing the socket connection");
       closeClientSocket();
+      killThread();
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void readInputAndWriteOutput() throws IOException, PacketHandlingException {
+    byte packetId = readPacketId();
+    if (isValidPacketId(packetId)) {
+      RequestHandler<?> requestHandler = requestDispatcher.dispatch(packetId);
+      Packet requestPacket = requestHandler.handle(is);
+      PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
+      Packet responsePacket = packetProcessor.processPacket(requestPacket);
+      writeAndFlushTheResponsePacket(responsePacket);
     }
   }
 
@@ -83,23 +97,14 @@ public class ClientHandler implements Runnable {
     } catch (InterruptedException e) {
       throw new PacketHandlingException("problems sleeping the thread", e);
     }
-
   }
 
   private void skeepSeedPacket() throws IOException {
     is.skip(4);
   }
 
-  @SuppressWarnings("unchecked")
-  private void readInputAndWriteOutput() throws IOException, PacketHandlingException {
-    byte packetId = readPacketId();
-    if (isValidPacketId(packetId)) {
-      RequestHandler<?> requestHandler = requestDispatcher.dispatch(packetId);
-      Packet requestPacket = requestHandler.handle(is);
-      PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
-      Packet responsePacket = packetProcessor.processPacket(requestPacket);
-      writeAndFlushTheResponsePacket(responsePacket);
-    }
+  private void killThread() {
+    Thread.currentThread().interrupt();
   }
 
   private boolean isValidPacketId(byte packetId) {
@@ -109,7 +114,7 @@ public class ClientHandler implements Runnable {
   private byte readPacketId() throws IOException {
     byte[] packetId = new byte[1];
     is.read(packetId);
-    log.info(String.format("packetId: %s", ByteUtil.getPrintable(packetId)));
+    log.info(String.format("received packet: %s", ByteUtil.getPrintable(packetId)));
     return packetId[0];
   }
 
