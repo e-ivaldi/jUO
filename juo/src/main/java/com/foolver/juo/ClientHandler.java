@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,12 @@ public class ClientHandler implements Runnable {
     this.client = client;
     this.requestDispatcher = packetDispatcher;
     this.packetProcessorDispatcher = packetProcessorDispatcher;
+    try {
+      client.setSoTimeout(3600000);
+    } catch (SocketException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     setupStreams(client);
   }
 
@@ -56,7 +63,6 @@ public class ClientHandler implements Runnable {
     } finally {
       log.info("closing the socket connection");
       closeClientSocket();
-      killThread();
     }
   }
 
@@ -89,7 +95,8 @@ public class ClientHandler implements Runnable {
     byte[] packetId = new byte[1];
     is.read(packetId);
     if (packetId[0] == 0) {
-      throw new PacketHandlingException("connection closed, the thread will be killed..");
+      log.info("client disconnected, killing the thread..");
+      killThread();
     }
     return packetId[0];
   }
