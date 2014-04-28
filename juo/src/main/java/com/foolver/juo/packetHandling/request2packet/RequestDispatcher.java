@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.request2packet.handlers.ClientSpyHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.DeleteCharacterHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.DoubleClickHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.GameServerLoginHandler;
-import com.foolver.juo.packetHandling.request2packet.handlers.GraphicalEffectHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.LoadAreaHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.LoadAreaRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.LoginCharacterHandler;
@@ -18,6 +18,7 @@ import com.foolver.juo.packetHandling.request2packet.handlers.LoginRequestHandle
 import com.foolver.juo.packetHandling.request2packet.handlers.MoveRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.PingMessageHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.RequestTipNoticeWindow;
 import com.foolver.juo.packetHandling.request2packet.handlers.RestartVersionHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SelectServerHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SendHelpTipRequestHandler;
@@ -39,7 +40,6 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0x5C, new RestartVersionHandler());
     requestHandlers.put((byte) 0xA0, new SelectServerHandler());
     requestHandlers.put((byte) 0xA4, new ClientSpyHandler());
-    requestHandlers.put((byte) 0xC0, new GraphicalEffectHandler());
     requestHandlers.put((byte) 0x91, new GameServerLoginHandler());
     requestHandlers.put((byte) 0x5D, new LoginCharacterHandler());
     requestHandlers.put((byte) 0x83, new DeleteCharacterHandler());
@@ -49,6 +49,8 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0x63, new LoadAreaHandler());
     requestHandlers.put((byte) 0x64, new LoadAreaRequestHandler());
     requestHandlers.put((byte) 0x73, new PingMessageHandler());
+    requestHandlers.put((byte) 0x06, new DoubleClickHandler());
+    requestHandlers.put((byte) 0xa7, new RequestTipNoticeWindow());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {

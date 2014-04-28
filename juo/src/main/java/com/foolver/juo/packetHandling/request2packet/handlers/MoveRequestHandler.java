@@ -20,7 +20,6 @@ public class MoveRequestHandler extends AbstractRequestHandler<MoveRequestPacket
       byte sequenceNumber = getByteFromInputStream(is);
       log.info(String.format("move sequence arrived: %s", sequenceNumber));
       int fastWalkPreventionKey = getIntFromInputStream(is);
-
       return new MoveRequestPacket(direction, sequenceNumber, fastWalkPreventionKey);
     });
   }

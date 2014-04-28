@@ -2,7 +2,12 @@ package com.foolver.juo.packetHandling.packets.processors;
 
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.request.GameServerLoginPacket;
+import com.foolver.juo.packetHandling.packets.response.CharLocaleAndBodyDebugPacket;
 import com.foolver.juo.packetHandling.packets.response.EmptyPacket;
+import com.foolver.juo.packetHandling.packets.response.EnableLockedClientFeaturesPacket;
+import com.foolver.juo.packetHandling.packets.response.LoginCompletePacket;
+import com.foolver.juo.packetHandling.packets.response.StatusBarInfoPacket;
+import com.foolver.juo.packetHandling.packets.special.MultiPacket;
 
 public class GameServerLoginPacketProcessor implements PacketProcessor<GameServerLoginPacket> {
 
@@ -31,7 +36,8 @@ public class GameServerLoginPacketProcessor implements PacketProcessor<GameServe
     //
     // return new MultiPacket(new DebugPacket(buffer1));
 
-    return new EmptyPacket();
+    return new MultiPacket(
+        new CharLocaleAndBodyDebugPacket());
 
   }
 }

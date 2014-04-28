@@ -11,7 +11,8 @@ public class RestartVersionHandler extends AbstractRequestHandler<RestartVersion
   @Override
   public RestartVersionPacket handle(InputStream is) throws PacketHandlingException {
     try {
-      getFixedSizeStringFromInputStream(is, 1);
+      //TODO implement this
+      skypBytes(is, 1);
     } catch (IOException e) {
       throw new PacketHandlingException(String.format("unable to handler packet %s", this.getClass().getSimpleName()),
           e);

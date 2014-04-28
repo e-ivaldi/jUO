@@ -26,6 +26,7 @@ public class ClientHandler implements Runnable {
   private OutputStream os;
   private RequestDispatcher requestDispatcher;
   private PacketProcessorDispatcher packetProcessorDispatcher;
+  private byte previousPacketId = 0x01;
 
   public ClientHandler(Socket client, RequestDispatcher packetDispatcher,
       PacketProcessorDispatcher packetProcessorDispatcher) {
@@ -33,7 +34,9 @@ public class ClientHandler implements Runnable {
     this.requestDispatcher = packetDispatcher;
     this.packetProcessorDispatcher = packetProcessorDispatcher;
     try {
-      client.setSoTimeout(3600000);
+      client.setSoTimeout(Integer.MAX_VALUE);
+      client.setKeepAlive(true);
+      client.setTcpNoDelay(true);
     } catch (SocketException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -88,16 +91,18 @@ public class ClientHandler implements Runnable {
   }
 
   private boolean isValidPacketId(byte packetId) {
-    return packetId != (byte) 0x00;
+    return packetId != 0x00;
   }
 
   private byte readPacketId() throws IOException, PacketHandlingException {
     byte[] packetId = new byte[1];
+    log.info(String.format("read packet: %s", packetId[0]));
     is.read(packetId);
-    if (packetId[0] == 0) {
+    if (packetId[0] == 0 && previousPacketId == 0) {
       log.info("client disconnected, killing the thread..");
       killThread();
     }
+    previousPacketId = packetId[0];
     return packetId[0];
   }
 

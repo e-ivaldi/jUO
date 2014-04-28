@@ -11,7 +11,7 @@ public class LoadAreaHandler extends AbstractRequestHandler<EmptyPacket> {
   public EmptyPacket handle(InputStream is) throws PacketHandlingException {
     return this.execute(() -> {
       // TODO: check what kind of response this request needs
-        this.skypBytes(is, 12); // unknown
+        skypBytes(is, 12); // unknown
         return new EmptyPacket();
       });
 

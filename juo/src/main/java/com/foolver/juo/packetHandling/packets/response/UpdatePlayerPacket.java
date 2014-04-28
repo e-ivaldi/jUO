@@ -17,7 +17,7 @@ public class UpdatePlayerPacket extends AbstractResponsePacket {
     this.dir = dir;   
     allocateAndSetupBuffer();
   }
-  
+ 
   @Override
   protected void fillBuffer() {
     buffer.put((byte) 0x77); // packetId
