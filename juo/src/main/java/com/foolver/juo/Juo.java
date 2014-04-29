@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foolver.juo.packetHandling.packets.processors.dispatcher.PacketProcessorDispatcher;
+import com.foolver.juo.packetHandling.packets.PacketProcessorDispatcher;
 import com.foolver.juo.packetHandling.request2packet.RequestDispatcher;
 
 public class Juo {

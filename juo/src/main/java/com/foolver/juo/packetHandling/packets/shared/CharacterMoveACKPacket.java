@@ -1,12 +1,20 @@
-package com.foolver.juo.packetHandling.packets.response;
+package com.foolver.juo.packetHandling.packets.shared;
+
+import com.foolver.juo.packetHandling.packets.response.AbstractResponsePacket;
 
 public class CharacterMoveACKPacket extends AbstractResponsePacket {
 
   private byte movementSequenceKey;
+  private byte notorietyFlag = 0x01;
 
   public CharacterMoveACKPacket(byte movementSequenceKey) {
+    this(movementSequenceKey, (byte) 0x01);
+  }
+
+  public CharacterMoveACKPacket(byte movementSequenceKey, byte notorietyFlag) {
     super(false);
     this.movementSequenceKey = movementSequenceKey;
+    this.notorietyFlag = notorietyFlag;
     allocateAndSetupBuffer();
   }
 
@@ -14,7 +22,7 @@ public class CharacterMoveACKPacket extends AbstractResponsePacket {
   protected void fillBuffer() {
     buffer.put((byte) 0x22); // packetId
     buffer.put(movementSequenceKey);
-    buffer.put((byte) 0x01); // notorietyFlag
+    buffer.put(notorietyFlag); // notorietyFlag
     /*
      * Notoriety 0 = invalid/across server line 1 = innocent (blue) 2 =
      * guilded/ally (green) 3 = attackable but not criminal (gray) 4 = criminal
@@ -26,6 +34,14 @@ public class CharacterMoveACKPacket extends AbstractResponsePacket {
   @Override
   public int getBufferSize() {
     return 3;
+  }
+
+  public byte getMovementSequenceKey() {
+    return movementSequenceKey;
+  }
+
+  public byte getNotorietyFlag() {
+    return notorietyFlag;
   }
 
 }

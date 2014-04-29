@@ -22,9 +22,9 @@ public class DrawGamePlayerPacket extends AbstractResponsePacket {
   protected void fillBuffer() {
     buffer.put((byte) 0x20); // packetId
     buffer.putInt(0); // playerId
-    buffer.putShort((short) 2); // model - bodytype
+    buffer.putShort((short) 400); // model - bodytype
     buffer.put((byte)0x00); // unknown
-    buffer.putShort((short)0); // skin color / hue
+    buffer.putShort((short)33770); // skin color / hue
     buffer.put((byte)0x01); // flag byte
     buffer.putShort(xLoc); // xloc
     buffer.putShort(yLoc); // yloc

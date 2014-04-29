@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foolver.juo.packetHandling.packets.Packet;
+import com.foolver.juo.packetHandling.request2packet.handlers.BooksHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.ClientSpyHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.ClientVersionHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.DeleteCharacterHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.DoubleClickHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.GameServerLoginHandler;
@@ -18,12 +20,17 @@ import com.foolver.juo.packetHandling.request2packet.handlers.LoginRequestHandle
 import com.foolver.juo.packetHandling.request2packet.handlers.MoveRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.PingMessageHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
-import com.foolver.juo.packetHandling.request2packet.handlers.RequestTipNoticeWindow;
+import com.foolver.juo.packetHandling.request2packet.handlers.RequestPlayerStatusHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.RequestSkillHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.RequestTipNoticeHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RestartVersionHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.ResyncRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SelectServerHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SendHelpTipRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.ServerListRemoveEntryHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.SingleClickHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SpeechRequestHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.UltimaMessengerHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.UnkownRequestHandler;
 import com.foolver.juo.util.ByteUtil;
 
@@ -50,7 +57,14 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0x64, new LoadAreaRequestHandler());
     requestHandlers.put((byte) 0x73, new PingMessageHandler());
     requestHandlers.put((byte) 0x06, new DoubleClickHandler());
-    requestHandlers.put((byte) 0xa7, new RequestTipNoticeWindow());
+    requestHandlers.put((byte) 0xA7, new RequestTipNoticeHandler());
+    requestHandlers.put((byte) 0x12, new RequestSkillHandler());
+    requestHandlers.put((byte) 0x34, new RequestPlayerStatusHandler());
+    requestHandlers.put((byte) 0x09, new SingleClickHandler());
+    requestHandlers.put((byte) 0x66, new BooksHandler());
+    requestHandlers.put((byte) 0xBB, new UltimaMessengerHandler());
+    requestHandlers.put((byte) 0xBD, new ClientVersionHandler());
+    requestHandlers.put((byte) 0x22, new ResyncRequestHandler());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {

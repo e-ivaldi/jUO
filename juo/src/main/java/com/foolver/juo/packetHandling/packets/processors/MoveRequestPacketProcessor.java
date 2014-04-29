@@ -2,7 +2,7 @@ package com.foolver.juo.packetHandling.packets.processors;
 
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.request.MoveRequestPacket;
-import com.foolver.juo.packetHandling.packets.response.CharacterMoveACKPacket;
+import com.foolver.juo.packetHandling.packets.shared.CharacterMoveACKPacket;
 
 public class MoveRequestPacketProcessor implements PacketProcessor<MoveRequestPacket> {
 

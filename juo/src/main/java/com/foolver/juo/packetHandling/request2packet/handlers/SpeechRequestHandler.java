@@ -20,7 +20,7 @@ public class SpeechRequestHandler extends AbstractRequestHandler<SpeechRequestPa
       skypBytes(is, 2); // color
       skypBytes(is, 2); // font
       skypBytes(is, 4); // language - string
-      String text = getFixedSizeStringFromInputStream(is, (int) packetLength - 11);
+      String text = getFixedSizeStringFromInputStream(is, (int) packetLength - 12);
       log.info(String.format("text: %s", text));
       return new SpeechRequestPacket(text);
     });

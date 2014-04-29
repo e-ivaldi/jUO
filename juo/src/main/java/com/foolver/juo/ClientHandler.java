@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.Packet;
+import com.foolver.juo.packetHandling.packets.PacketProcessorDispatcher;
 import com.foolver.juo.packetHandling.packets.processors.PacketProcessor;
-import com.foolver.juo.packetHandling.packets.processors.dispatcher.PacketProcessorDispatcher;
 import com.foolver.juo.packetHandling.request2packet.RequestDispatcher;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
 import com.foolver.juo.util.ByteUtil;
@@ -76,9 +76,16 @@ public class ClientHandler implements Runnable {
       RequestHandler<?> requestHandler = requestDispatcher.dispatch(packetId);
       Packet requestPacket = requestHandler.handle(is);
       PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
+      logPacketProcessorInfo(packetId, packetProcessor);
       Packet responsePacket = packetProcessor.processPacket(requestPacket);
       writeAndFlushTheResponsePacket(responsePacket);
     }
+  }
+  
+  private void logPacketProcessorInfo(byte packetId, PacketProcessor<? extends Packet> packetProcessor) {
+    log.info(String.format("using packetProcessor %s for packet %s",
+        packetProcessor.getClass().getSimpleName(), 
+        ByteUtil.getPrintable(packetId)));
   }
 
   private void skeepSeedPacket() throws IOException {
@@ -96,8 +103,8 @@ public class ClientHandler implements Runnable {
 
   private byte readPacketId() throws IOException, PacketHandlingException {
     byte[] packetId = new byte[1];
-    log.info(String.format("read packet: %s", packetId[0]));
     is.read(packetId);
+    log.info(String.format("read packet: %s", ByteUtil.getPrintable(packetId[0])));
     if (packetId[0] == 0 && previousPacketId == 0) {
       log.info("client disconnected, killing the thread..");
       killThread();
