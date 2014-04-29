@@ -5,7 +5,6 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foolver.juo.packetHandling.packets.response.DrawGamePlayerPacket;
 import com.foolver.juo.packetHandling.packets.utils.Direction;
 
 public class PlayerInfo {
