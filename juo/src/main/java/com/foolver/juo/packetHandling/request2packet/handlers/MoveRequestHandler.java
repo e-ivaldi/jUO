@@ -16,9 +16,10 @@ public class MoveRequestHandler extends AbstractRequestHandler<MoveRequestPacket
   @Override
   public MoveRequestPacket handle(InputStream is) throws PacketHandlingException {
     return this.execute(() -> {
-      Direction direction = Direction.fromValue(getByteFromInputStream(is));
+      byte directionByte = getByteFromInputStream(is);
+      Direction direction = Direction.fromValue(directionByte);
       byte sequenceNumber = getByteFromInputStream(is);
-      log.info(String.format("move sequence arrived: %s", sequenceNumber));
+      log.info(String.format("move sequence arrived: %s, direction: %s", sequenceNumber, direction));
       int fastWalkPreventionKey = getIntFromInputStream(is);
       return new MoveRequestPacket(direction, sequenceNumber, fastWalkPreventionKey);
     });

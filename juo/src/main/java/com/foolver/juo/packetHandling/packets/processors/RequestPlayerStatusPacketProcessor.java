@@ -8,7 +8,6 @@ public class RequestPlayerStatusPacketProcessor implements PacketProcessor<Reque
 
   @Override
   public Packet processPacket(RequestPlayerStatusPacket packet) {
-    //TODO: load the attacker here ?!!? what to put there instead of -1?
     return new UpdateMobileStatusPacket(packet.getPlayerSerial(), packet.getStatus(), -1);
   }
 }
