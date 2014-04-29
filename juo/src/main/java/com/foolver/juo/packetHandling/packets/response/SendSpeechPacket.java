@@ -25,12 +25,7 @@ public class SendSpeechPacket extends AbstractResponsePacket {
     buffer.putShort((byte) 0); // color
     buffer.putShort((byte) 0); // font
     buffer.put(ByteUtil.getPaddedBytesOfString("admin", 30));
-    text = prepareText(text);
     buffer.put(ByteUtil.getPaddedBytesOfString(text, text.length()));
-  }
-
-  private String prepareText(String text2) {
-    return text += '\0';
   }
 
   @Override
