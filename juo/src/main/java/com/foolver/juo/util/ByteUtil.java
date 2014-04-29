@@ -19,6 +19,7 @@ public class ByteUtil {
   }
 
   public static byte[] getPaddedBytesOfString(String s, int length) {
-    return String.format("%1$-" + length + "s", s, length).getBytes();
+    return String.format("%1$-" + length + "s", s+'\0').getBytes();
   }
+
 }
