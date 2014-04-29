@@ -81,10 +81,9 @@ public class ClientHandler implements Runnable {
       writeAndFlushTheResponsePacket(responsePacket);
     }
   }
-  
+
   private void logPacketProcessorInfo(byte packetId, PacketProcessor<? extends Packet> packetProcessor) {
-    log.info(String.format("using packetProcessor %s for packet %s",
-        packetProcessor.getClass().getSimpleName(), 
+    log.info(String.format("using packetProcessor %s for packet %s", packetProcessor.getClass().getSimpleName(),
         ByteUtil.getPrintable(packetId)));
   }
 
