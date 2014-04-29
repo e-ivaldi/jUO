@@ -18,12 +18,11 @@ public class SendSpeechPacket extends AbstractResponsePacket {
   protected void fillBuffer() {
     buffer.put((byte) 0x1c);
     buffer.putShort((byte) getBufferSize());
-    buffer.putInt(0);
-    buffer.put((byte) 0xff); // model
-    buffer.put((byte) 0xff); // model
+    buffer.putInt(24 << 0xFF | 16 << 0xFF | 8 << 0xFF | 0XFF);
+    buffer.putShort((short) (8 << 0xFF | 0XFF)); // model
     buffer.put(type);
-    buffer.putShort((byte) 0); // color
-    buffer.putShort((byte) 0); // font
+    buffer.putShort((byte) 1); // color
+    buffer.putShort((byte) 1); // font
     buffer.put(ByteUtil.getPaddedBytesOfString("admin", 30));
     buffer.put(ByteUtil.getPaddedBytesOfString(text, text.length()));
   }

@@ -38,7 +38,7 @@ public class SpeechRequestPacketProcessor implements PacketProcessor<SpeechReque
     } else if (packet.getText().startsWith("speech")) {
       return new SendSpeechPacket((byte) 0x07, "this is an admin message");
     } else if (packet.getText().startsWith("send")) {
-      return new SendSpeechPacket((byte) 0x07, "this is an admin message");
+      return new SendSpeechPacket((byte) 0x01, "Welcome to JUO!");
     }
     return new EmptyPacket();
     // return new
