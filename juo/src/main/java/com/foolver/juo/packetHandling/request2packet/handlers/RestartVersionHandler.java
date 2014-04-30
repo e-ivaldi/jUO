@@ -1,18 +1,18 @@
 package com.foolver.juo.packetHandling.request2packet.handlers;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.request.RestartVersionPacket;
+import com.foolver.juo.util.DataReader;
 
 public class RestartVersionHandler extends AbstractRequestHandler<RestartVersionPacket> {
 
   @Override
-  public RestartVersionPacket handle(InputStream is) throws PacketHandlingException {
+  public RestartVersionPacket handle(DataReader dataReader) throws PacketHandlingException {
     try {
-      //TODO implement this
-      skypBytes(is, 1);
+      // TODO implement this
+      dataReader.skip(1);
     } catch (IOException e) {
       throw new PacketHandlingException(String.format("unable to handler packet %s", this.getClass().getSimpleName()),
           e);

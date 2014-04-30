@@ -1,10 +1,8 @@
 package com.foolver.juo;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +14,15 @@ import com.foolver.juo.packetHandling.packets.processors.PacketProcessor;
 import com.foolver.juo.packetHandling.request2packet.RequestDispatcher;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
 import com.foolver.juo.util.ByteUtil;
+import com.foolver.juo.util.DataReader;
+import com.foolver.juo.util.SimpleDataReader;
 
 public class ClientHandler implements Runnable {
 
   private static final Logger log = LoggerFactory.getLogger(ClientHandler.class);
 
   private Socket client;
-  private InputStream is;
+  private DataReader dataReader;
   private OutputStream os;
   private RequestDispatcher requestDispatcher;
   private PacketProcessorDispatcher packetProcessorDispatcher;
@@ -33,20 +33,12 @@ public class ClientHandler implements Runnable {
     this.client = client;
     this.requestDispatcher = packetDispatcher;
     this.packetProcessorDispatcher = packetProcessorDispatcher;
-    try {
-      client.setSoTimeout(Integer.MAX_VALUE);
-      client.setKeepAlive(true);
-      client.setTcpNoDelay(true);
-    } catch (SocketException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
     setupStreams(client);
   }
 
   private void setupStreams(Socket client) {
     try {
-      is = client.getInputStream();
+      dataReader = new SimpleDataReader(client.getInputStream());
       os = client.getOutputStream();
     } catch (IOException e) {
       log.error("unable to get stream for the client", e);
@@ -74,7 +66,7 @@ public class ClientHandler implements Runnable {
     byte packetId = readPacketId();
     if (isValidPacketId(packetId)) {
       RequestHandler<?> requestHandler = requestDispatcher.dispatch(packetId);
-      Packet requestPacket = requestHandler.handle(is);
+      Packet requestPacket = requestHandler.handle(dataReader);
       PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
       logPacketProcessorInfo(packetId, packetProcessor);
       Packet responsePacket = packetProcessor.processPacket(requestPacket);
@@ -88,7 +80,7 @@ public class ClientHandler implements Runnable {
   }
 
   private void skeepSeedPacket() throws IOException {
-    is.skip(4);
+    dataReader.skip(4);
   }
 
   private void killThread() {
@@ -101,15 +93,14 @@ public class ClientHandler implements Runnable {
   }
 
   private byte readPacketId() throws IOException, PacketHandlingException {
-    byte[] packetId = new byte[1];
-    is.read(packetId);
-    log.info(String.format("read packet: %s", ByteUtil.getPrintable(packetId[0])));
-    if (packetId[0] == 0 && previousPacketId == 0) {
+    byte packetId = dataReader.readByte();
+    log.info(String.format("read packet: %s", ByteUtil.getPrintable(packetId)));
+    if (packetId == 0 && previousPacketId == 0) {
       log.info("client disconnected, killing the thread..");
       killThread();
     }
-    previousPacketId = packetId[0];
-    return packetId[0];
+    previousPacketId = packetId;
+    return packetId;
   }
 
   private void writeAndFlushTheResponsePacket(Packet responsePacket) throws IOException {

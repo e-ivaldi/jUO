@@ -1,17 +1,16 @@
 package com.foolver.juo.packetHandling.request2packet.handlers;
 
-import java.io.InputStream;
-
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.shared.RequestTipNoticePacket;
+import com.foolver.juo.util.DataReader;
 
 public class RequestTipNoticeHandler extends AbstractRequestHandler<RequestTipNoticePacket> {
 
   @Override
-  public RequestTipNoticePacket handle(InputStream is) throws PacketHandlingException {
+  public RequestTipNoticePacket handle(DataReader dataReader) throws PacketHandlingException {
     return this.execute(() -> {
-      short lastTip = getShortFromInputStream(is);
-      byte flag = getByteFromInputStream(is);
+      short lastTip = dataReader.readShort();
+      byte flag = dataReader.readByte();
       return new RequestTipNoticePacket(lastTip, flag);
     });
   }

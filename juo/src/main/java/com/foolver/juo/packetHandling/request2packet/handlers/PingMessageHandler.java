@@ -1,16 +1,15 @@
 package com.foolver.juo.packetHandling.request2packet.handlers;
 
-import java.io.InputStream;
-
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.shared.PingMessagePacket;
+import com.foolver.juo.util.DataReader;
 
 public class PingMessageHandler extends AbstractRequestHandler<PingMessagePacket> {
 
   @Override
-  public PingMessagePacket handle(InputStream is) throws PacketHandlingException {
+  public PingMessagePacket handle(DataReader dataReader) throws PacketHandlingException {
     return this.execute(() -> {
-      byte sequence = getByteFromInputStream(is);
+      byte sequence = dataReader.readByte();
       return new PingMessagePacket(sequence);
     });
   }
