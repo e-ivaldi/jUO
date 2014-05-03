@@ -2,7 +2,6 @@ package com.foolver.juo.packetHandling.packets.processors;
 
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.response.ConnectToGameServerPacket;
-import com.foolver.juo.packetHandling.packets.response.EnableLockedClientFeaturesPacket;
 import com.foolver.juo.packetHandling.packets.response.LoginCompletePacket;
 import com.foolver.juo.packetHandling.packets.response.StatusBarInfoPacket;
 import com.foolver.juo.packetHandling.packets.shared.ClientVersionPacket;
@@ -16,7 +15,6 @@ public class ClientVersionPacketProcessor implements PacketProcessor<ClientVersi
         new ClientVersionPacket(packet.getVersion()),
         new LoginCompletePacket(),
         new StatusBarInfoPacket(),
-        new EnableLockedClientFeaturesPacket(),
         new ConnectToGameServerPacket());
   }
 }
