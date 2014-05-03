@@ -28,6 +28,7 @@ import com.foolver.juo.packetHandling.request2packet.handlers.RestartVersionHand
 import com.foolver.juo.packetHandling.request2packet.handlers.ResyncRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SelectServerHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SendHelpTipRequestHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.SendSkillHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.ServerListRemoveEntryHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SingleClickHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.SpeechRequestHandler;
@@ -67,6 +68,7 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0xBD, new ClientVersionHandler());
     requestHandlers.put((byte) 0x22, new ResyncRequestHandler());
     requestHandlers.put((byte) 0xB8, new RequestCharProfileHandler());
+    requestHandlers.put((byte) 0x3A, new SendSkillHandler());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {

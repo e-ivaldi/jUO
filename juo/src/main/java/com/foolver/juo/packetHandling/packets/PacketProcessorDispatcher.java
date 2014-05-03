@@ -23,6 +23,7 @@ import com.foolver.juo.packetHandling.packets.processors.RequestTipNoticePacketP
 import com.foolver.juo.packetHandling.packets.processors.RestartVersionPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.ResyncRequestPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.SelectServerPacketProcessor;
+import com.foolver.juo.packetHandling.packets.processors.SendSkillPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.ServerListRemoveEntryPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.SingleClickPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.SpeechRequestPacketProcessor;
@@ -37,6 +38,7 @@ import com.foolver.juo.packetHandling.packets.request.MoveRequestPacket;
 import com.foolver.juo.packetHandling.packets.request.RequestPlayerStatusPacket;
 import com.foolver.juo.packetHandling.packets.request.RestartVersionPacket;
 import com.foolver.juo.packetHandling.packets.request.SelectServerPacket;
+import com.foolver.juo.packetHandling.packets.request.SendSkillPacket;
 import com.foolver.juo.packetHandling.packets.request.ServerListRemoveEntryPacket;
 import com.foolver.juo.packetHandling.packets.request.SingleClickPacket;
 import com.foolver.juo.packetHandling.packets.request.SpeechRequestPacket;
@@ -72,6 +74,7 @@ public class PacketProcessorDispatcher {
     packetProcessors.put(CharacterMoveACKPacket.class, new ResyncRequestPacketProcessor());
     packetProcessors.put(SingleClickPacket.class, new SingleClickPacketProcessor());
     packetProcessors.put(DoubleClickPacket.class, new DoubleClickPacketProcessor());
+    packetProcessors.put(SendSkillPacket.class, new SendSkillPacketProcessor());
   }
 
   @SuppressWarnings("rawtypes")

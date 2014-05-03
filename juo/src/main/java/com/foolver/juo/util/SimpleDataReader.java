@@ -39,4 +39,19 @@ public class SimpleDataReader implements DataReader {
     dataInputStream.skip(length);
   }
 
+  @Override
+  public void skipByte() throws IOException {
+    skip(Byte.BYTES);    
+  }
+
+  @Override
+  public void skipShort() throws IOException {
+    skip(Short.BYTES);    
+  }
+
+  @Override
+  public void skipInt() throws IOException {
+    skip(Integer.BYTES);    
+  }
+
 }
