@@ -19,6 +19,7 @@ import com.foolver.juo.packetHandling.request2packet.handlers.LoginCharacterHand
 import com.foolver.juo.packetHandling.request2packet.handlers.LoginRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.MoveRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.PingMessageHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.RequestCharProfileHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestPlayerStatusHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestSkillHandler;
@@ -65,6 +66,7 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0xBB, new UltimaMessengerHandler());
     requestHandlers.put((byte) 0xBD, new ClientVersionHandler());
     requestHandlers.put((byte) 0x22, new ResyncRequestHandler());
+    requestHandlers.put((byte) 0xB8, new RequestCharProfileHandler());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {

@@ -5,12 +5,13 @@ import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.response.DrawGamePlayerPacket;
 import com.foolver.juo.packetHandling.packets.shared.CharacterMoveACKPacket;
 
-public class ResyncRequestProcessor implements PacketProcessor<CharacterMoveACKPacket> {
+public class ResyncRequestPacketProcessor implements PacketProcessor<CharacterMoveACKPacket> {
 
   @Override
   public Packet processPacket(CharacterMoveACKPacket packet) {
     PlayerInfo playerInfo = PlayerInfo.getInstance();
-    return new DrawGamePlayerPacket(       
+    return new DrawGamePlayerPacket( 
+        playerInfo.getSerialId(),
         playerInfo.getPosX(), 
         playerInfo.getPosY(),
         playerInfo.getPosZ(),

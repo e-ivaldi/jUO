@@ -4,13 +4,15 @@ import com.foolver.juo.packetHandling.packets.utils.Direction;
 
 public class CharLocaleAndBodyDebugPacket extends AbstractResponsePacket {
 
+  private int serialId;
   private short posX;
   private short posY;
   private byte posZ;
   private Direction dir;
 
-  public CharLocaleAndBodyDebugPacket(short posX, short posY, byte posZ, Direction dir) {
+  public CharLocaleAndBodyDebugPacket(int serialId, short posX, short posY, byte posZ, Direction dir) {
     super(false);
+    this.serialId = serialId;
     this.posX = posX;
     this.posY = posY;
     this.posZ = posZ;
@@ -21,7 +23,7 @@ public class CharLocaleAndBodyDebugPacket extends AbstractResponsePacket {
   @Override
   public void fillBuffer() {
     buffer.put((byte) 0x1B); // draw game player
-    buffer.putInt(0); // serial
+    buffer.putInt(serialId); // serial
     buffer.putInt(0); // unknown
     buffer.putShort((short) 400); // bodyType
     buffer.putShort(posX); // xLoc

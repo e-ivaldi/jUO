@@ -4,12 +4,13 @@ import com.foolver.juo.packetHandling.packets.utils.Direction;
 
 public class DrawGamePlayerPacket extends AbstractResponsePacket {
 
+  private int serialId;
   private short xLoc;
   private short yLoc;
   private byte zLoc;
-  Direction dir;
+  private Direction dir;
 
-  public DrawGamePlayerPacket(short xLoc, short yLoc, byte zLoc, Direction dir) {
+  public DrawGamePlayerPacket(int serialId, short xLoc, short yLoc, byte zLoc, Direction dir) {
     super(false);
     this.xLoc = xLoc;
     this.yLoc = yLoc;
@@ -21,7 +22,7 @@ public class DrawGamePlayerPacket extends AbstractResponsePacket {
   @Override
   protected void fillBuffer() {
     buffer.put((byte) 0x20); // packetId
-    buffer.putInt(0); // playerId
+    buffer.putInt(serialId); // playerId
     buffer.putShort((short) 400); // model - bodytype
     buffer.put((byte)0x00); // unknown
     buffer.putShort((short)33770); // skin color / hue

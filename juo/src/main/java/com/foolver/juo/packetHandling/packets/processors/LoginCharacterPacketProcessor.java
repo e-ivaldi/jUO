@@ -8,6 +8,7 @@ import com.foolver.juo.packetHandling.packets.response.DrawGamePlayerPacket;
 import com.foolver.juo.packetHandling.packets.response.EnableLockedClientFeaturesPacket;
 import com.foolver.juo.packetHandling.packets.response.LoginCompletePacket;
 import com.foolver.juo.packetHandling.packets.response.StatusBarInfoPacket;
+import com.foolver.juo.packetHandling.packets.response.UpdateMobileStatusPacket;
 import com.foolver.juo.packetHandling.packets.special.MultiPacket;
 
 public class LoginCharacterPacketProcessor implements PacketProcessor<LoginCharacterPacket> {
@@ -17,18 +18,20 @@ public class LoginCharacterPacketProcessor implements PacketProcessor<LoginChara
     PlayerInfo playerInfo = PlayerInfo.getInstance();
     return new MultiPacket(        
         new CharLocaleAndBodyDebugPacket(
+            playerInfo.getSerialId(),
             playerInfo.getPosX(), 
             playerInfo.getPosY(),
             playerInfo.getPosZ(),
             playerInfo.getDir()),
             //TODO: do I need to send a DrawGamePlayer juyst after a CharocaleAndBodyDebug ?
         new DrawGamePlayerPacket(
+            playerInfo.getSerialId(),
             playerInfo.getPosX(), 
             playerInfo.getPosY(),
             playerInfo.getPosZ(),
             playerInfo.getDir()),
         new LoginCompletePacket(),
-        new StatusBarInfoPacket(),
+        new StatusBarInfoPacket(playerInfo.getSerialId()),
         new EnableLockedClientFeaturesPacket());
   }
 }

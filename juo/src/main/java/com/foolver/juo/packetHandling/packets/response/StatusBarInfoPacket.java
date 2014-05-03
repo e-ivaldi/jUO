@@ -4,11 +4,19 @@ import com.foolver.juo.util.ByteUtil;
 
 public class StatusBarInfoPacket extends AbstractResponsePacket {
 
+  private int serialId;
+  
+  public StatusBarInfoPacket(int serialId){
+    super(false);
+    this.serialId = serialId;
+    allocateAndSetupBuffer();
+  }
+  
   @Override
   protected void fillBuffer() {  
     buffer.put((byte) 0x11);
     buffer.putShort((short)getBufferSize());
-    buffer.putInt(0); //player serial
+    buffer.putInt(serialId); //player serial
     buffer.put(ByteUtil.getPaddedBytesOfString("playername", 30));
     buffer.putShort((short)255); // current hit points
     buffer.putShort((short)255); // max hit points

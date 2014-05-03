@@ -4,24 +4,26 @@ import com.foolver.juo.packetHandling.packets.utils.Direction;
 
 public class UpdatePlayerPacket extends AbstractResponsePacket {
 
+  private int serialId;
   private short xLoc;
   private short yLoc;
   private byte zLoc;
   Direction dir;
   
-  public UpdatePlayerPacket(short xLoc, short yLoc, byte zLoc, Direction dir){
+  public UpdatePlayerPacket(int serialId, short xLoc, short yLoc, byte zLoc, Direction dir){
     super(false);
+    this.serialId = serialId;
     this.xLoc = xLoc;
     this.yLoc = yLoc;
     this.zLoc = zLoc;
-    this.dir = dir;   
+    this.dir = dir;  
     allocateAndSetupBuffer();
   }
  
   @Override
   protected void fillBuffer() {
     buffer.put((byte) 0x77); // packetId
-    buffer.putInt(0); // playerId
+    buffer.putInt(serialId); // playerId
     buffer.putShort((short)0); // model
     buffer.putShort(xLoc); // xloc
     buffer.putShort(yLoc); // yloc

@@ -1,6 +1,8 @@
-package com.foolver.juo.packetHandling.packets.response;
+package com.foolver.juo.packetHandling.packets.special;
 
 import java.nio.ByteBuffer;
+
+import com.foolver.juo.packetHandling.packets.response.AbstractResponsePacket;
 
 public class DebugPacket extends AbstractResponsePacket {
   

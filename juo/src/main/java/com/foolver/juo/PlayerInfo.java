@@ -31,7 +31,8 @@ public class PlayerInfo {
     private PlayerInfo createAndSetupPlayerInfo() {
       int randomSerial = new Random().nextInt(Integer.MAX_VALUE);
       log.info(String.format("rnd created for the player: %s", randomSerial));
-      PlayerInfo playerInfo = new PlayerInfo(randomSerial);
+      // TODO: mmm need to check the packet that's not handling the serial correctly
+      PlayerInfo playerInfo = new PlayerInfo(0);
       playerInfo.posX = 1496;
       playerInfo.posY = 1628;
       playerInfo.posZ = 0x10;

@@ -2,7 +2,7 @@ package com.foolver.juo.packetHandling.packets.response;
 
 public class UpdateMobileStatusPacket extends AbstractResponsePacket {
 
-  private int playerSerial;
+  private int serialId;
   private byte status;
   private int attackerSerial = -1;
 
@@ -12,7 +12,7 @@ public class UpdateMobileStatusPacket extends AbstractResponsePacket {
 
   public UpdateMobileStatusPacket(int playerSerial, byte status, int attackerSerial) {
     super(false);
-    this.playerSerial = playerSerial;
+    this.serialId = playerSerial;
     this.status = status;
     this.attackerSerial = attackerSerial;
     allocateAndSetupBuffer();
@@ -23,7 +23,7 @@ public class UpdateMobileStatusPacket extends AbstractResponsePacket {
   }
 
   public int getPlayerSerial() {
-    return playerSerial;
+    return serialId;
   }
 
   public byte getStatus() {
@@ -38,7 +38,7 @@ public class UpdateMobileStatusPacket extends AbstractResponsePacket {
   protected void fillBuffer() {
     buffer.put((byte) 0xDE);
     buffer.putShort((short) getBufferSize());
-    buffer.putInt(playerSerial);
+    buffer.putInt(serialId);
     buffer.put(status);
     if (status == 0x01) {
       buffer.putInt(attackerSerial);

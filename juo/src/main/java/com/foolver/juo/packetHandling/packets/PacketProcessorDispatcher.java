@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.processors.ClientVersionPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.DeleteCharacterPacketProcessor;
+import com.foolver.juo.packetHandling.packets.processors.DoubleClickPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.EmptyPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.GameServerLoginPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.GraphicalEffectPacketProcessor;
@@ -20,12 +21,14 @@ import com.foolver.juo.packetHandling.packets.processors.PingMessagePacketProces
 import com.foolver.juo.packetHandling.packets.processors.RequestPlayerStatusPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.RequestTipNoticePacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.RestartVersionPacketProcessor;
-import com.foolver.juo.packetHandling.packets.processors.ResyncRequestProcessor;
+import com.foolver.juo.packetHandling.packets.processors.ResyncRequestPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.SelectServerPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.ServerListRemoveEntryPacketProcessor;
+import com.foolver.juo.packetHandling.packets.processors.SingleClickPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.SpeechRequestPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.UltimaMessengerPacketProcessor;
 import com.foolver.juo.packetHandling.packets.request.DeleteCharacterPacket;
+import com.foolver.juo.packetHandling.packets.request.DoubleClickPacket;
 import com.foolver.juo.packetHandling.packets.request.GameServerLoginPacket;
 import com.foolver.juo.packetHandling.packets.request.GraphicalEffectPacket;
 import com.foolver.juo.packetHandling.packets.request.LoginCharacterPacket;
@@ -35,6 +38,7 @@ import com.foolver.juo.packetHandling.packets.request.RequestPlayerStatusPacket;
 import com.foolver.juo.packetHandling.packets.request.RestartVersionPacket;
 import com.foolver.juo.packetHandling.packets.request.SelectServerPacket;
 import com.foolver.juo.packetHandling.packets.request.ServerListRemoveEntryPacket;
+import com.foolver.juo.packetHandling.packets.request.SingleClickPacket;
 import com.foolver.juo.packetHandling.packets.request.SpeechRequestPacket;
 import com.foolver.juo.packetHandling.packets.response.EmptyPacket;
 import com.foolver.juo.packetHandling.packets.response.UltimaMessengerPacket;
@@ -65,7 +69,9 @@ public class PacketProcessorDispatcher {
     packetProcessors.put(UltimaMessengerPacket.class, new UltimaMessengerPacketProcessor());
     packetProcessors.put(ClientVersionPacket.class, new ClientVersionPacketProcessor());
     packetProcessors.put(RequestPlayerStatusPacket.class, new RequestPlayerStatusPacketProcessor());
-    packetProcessors.put(CharacterMoveACKPacket.class, new ResyncRequestProcessor());
+    packetProcessors.put(CharacterMoveACKPacket.class, new ResyncRequestPacketProcessor());
+    packetProcessors.put(SingleClickPacket.class, new SingleClickPacketProcessor());
+    packetProcessors.put(DoubleClickPacket.class, new DoubleClickPacketProcessor());
   }
 
   @SuppressWarnings("rawtypes")
