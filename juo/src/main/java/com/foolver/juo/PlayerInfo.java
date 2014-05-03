@@ -15,6 +15,8 @@ public class PlayerInfo {
   private short posY;
   private byte  posZ;
   private Direction dir;
+  //TODO: remove this shitty solution asap pls
+  private boolean skillsRequested = false;
   
   private PlayerInfo(int serialId) {
     this.serialId = serialId;
@@ -98,6 +100,14 @@ public class PlayerInfo {
   
   public void decrementY() {
     posY--;    
-  }  
+  }
+
+  public boolean isSkillsRequested() {
+    return skillsRequested;
+  }
+
+  public void setSkillsRequested(boolean skillsRequested) {
+    this.skillsRequested = skillsRequested;
+  }   
 
 }

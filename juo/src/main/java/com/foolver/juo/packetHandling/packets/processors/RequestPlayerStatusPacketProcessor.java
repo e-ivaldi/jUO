@@ -18,8 +18,6 @@ public class RequestPlayerStatusPacketProcessor implements PacketProcessor<Reque
   private static final byte BASIC_STATUS = 0x04;
   private static final byte REQUEST_SKILL = 0x05;
 
-  private static boolean alreadySent = false;
-
   @Override
   public Packet processPacket(RequestPlayerStatusPacket packet) {
     log.info(String.format("Request player status of type: %s", packet.getStatus()));
@@ -31,19 +29,16 @@ public class RequestPlayerStatusPacketProcessor implements PacketProcessor<Reque
     PlayerInfo playerInfo = PlayerInfo.getInstance();
     if (packet.getStatus() == BASIC_STATUS) {
       response = new StatusBarInfoPacket(playerInfo.getSerialId());
-    } else if (packet.getStatus() == REQUEST_SKILL) {
-      // this is not good at all, need to understand why the first time 0x34 is requested
+    } else { // request skill
+      // TODO: this is not good at all, need to understand why the first time 0x34 is requested
       // the client blocks if it gets the skills packet instead of the update mobile status ...
-      if (!alreadySent) {
+      if (!playerInfo.isSkillsRequested()) {
          response = new UpdateMobileStatusPacket(playerInfo.getSerialId(), packet.getStatus(), -1);
-        alreadySent = true;
+         playerInfo.setSkillsRequested(true);
       } else {
         response = new AllSkillsPacket();
       }
-    } else {
-      log.error("client is requesting a non recnognized status for the player");
-      response = new EmptyPacket();
-    }
+    } 
     return response;
   }
 }
