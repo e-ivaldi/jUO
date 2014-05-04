@@ -45,7 +45,7 @@ public class MapReader {
     byte z = 0;
     if (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT) {
       int blockLockup = calculateBlockLockup(x, y);
-      int cellLockup = calculateCellLokup(x, y);
+      int cellLockup = calculateCellLockup(x, y);
       z = bytes[blockLockup + cellLockup + CELL_TILE_ID_SIZE];
     } else {
       log.error(String.format("unable to get the altitude for coordinates %s,%s, returning 0x00", x, y));
@@ -53,7 +53,7 @@ public class MapReader {
     return z;
   }
 
-  private int calculateCellLokup(int x, int y) {
+  private int calculateCellLockup(int x, int y) {
     return BLOCK_HEADER_SIZE
         + (((y % CELLS_PER_BLOCK_IN_A_COLUMN) * CELLS_PER_BLOCK_IN_A_COLUMN) + (x % CELLS_PER_BLOCK_IN_A_COLUMN))
         * CELL_SIZE;
