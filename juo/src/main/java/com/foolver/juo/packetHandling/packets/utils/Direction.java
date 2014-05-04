@@ -27,7 +27,7 @@ public enum Direction {
   }
 
   public static Direction fromValue(byte b) {
-    //TODO: look at this, don't know why but sometimes the direction packet is + 80 bytes
+    // if the character is running we need to remove 0x80 bytes
     if(b < 0x00){
       b -= 0x80;
     }
