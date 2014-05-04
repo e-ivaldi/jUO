@@ -3,7 +3,7 @@ package com.foolver.juo.packetHandling.packets.processors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foolver.juo.PlayerInfo;
+import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.request.MoveRequestPacket;
 import com.foolver.juo.packetHandling.packets.shared.CharacterMoveACKPacket;

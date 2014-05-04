@@ -1,11 +1,14 @@
-package com.foolver.juo;
+package com.foolver.juo.game;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foolver.juo.packetHandling.packets.utils.Direction;
+import com.foolver.juo.packetHandling.packets.utils.Skill;
 
 public class PlayerInfo {
 
@@ -13,13 +16,23 @@ public class PlayerInfo {
 
   private short posX;
   private short posY;
-  private byte  posZ;
+  private byte posZ;
   private Direction dir;
-  //TODO: remove this shitty solution asap pls
-  private boolean skillsRequested = false;
-  
+  private String name;
+  private boolean skillsRequested = false; // remove this solution asap pls,
+  private short skinColor;
+  private Map<Skill, SkillModel> skills;
+
   private PlayerInfo(int serialId) {
     this.serialId = serialId;
+    this.skills = new HashMap<>();
+    setupSkills();
+  }
+
+  private void setupSkills() {
+    for (Skill skill : Skill.values()) {
+      skills.put(skill, new SkillModel());
+    }
   }
 
   private static final ThreadLocal<PlayerInfo> instance = new ThreadLocal<PlayerInfo>() {
@@ -33,7 +46,8 @@ public class PlayerInfo {
     private PlayerInfo createAndSetupPlayerInfo() {
       int randomSerial = new Random().nextInt(Integer.MAX_VALUE);
       log.info(String.format("rnd created for the player: %s", randomSerial));
-      // TODO: mmm need to check the packet that's not handling the serial correctly
+      // TODO: mmm need to check the packet that's not handling the serial
+      // correctly
       PlayerInfo playerInfo = new PlayerInfo(0);
       playerInfo.posX = 1496;
       playerInfo.posY = 1628;
@@ -87,19 +101,19 @@ public class PlayerInfo {
 
   public void incrementX() {
     posX++;
-  }  
-  
+  }
+
   public void decrementX() {
-    posX--;    
-  }  
-  
+    posX--;
+  }
+
   public void incrementY() {
     posY++;
-    
-  }  
-  
+
+  }
+
   public void decrementY() {
-    posY--;    
+    posY--;
   }
 
   public boolean isSkillsRequested() {
@@ -108,6 +122,26 @@ public class PlayerInfo {
 
   public void setSkillsRequested(boolean skillsRequested) {
     this.skillsRequested = skillsRequested;
-  }   
+  }
+
+  public SkillModel getSkill(Skill skill) {
+    return skills.get(skill);
+  }
+
+  public void setName(String name){
+    this.name = name;
+  }
+  
+  public String getName() {
+    return name;
+  }
+
+  public short getSkinColor() {
+    return skinColor;
+  }
+
+  public void setSkinColor(short skinColor) {
+    this.skinColor = skinColor;
+  }
 
 }

@@ -1,6 +1,6 @@
 package com.foolver.juo.packetHandling.packets.processors;
 
-import com.foolver.juo.PlayerInfo;
+import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.request.CreateCharacterPacket;
 import com.foolver.juo.packetHandling.packets.response.CharLocaleAndBodyDebugPacket;
@@ -16,22 +16,18 @@ public class CreateCharacterPacketProcessor implements PacketProcessor<CreateCha
   public Packet processPacket(CreateCharacterPacket packet) {
     //TODO validate input data and use the data from the input packet
     PlayerInfo playerInfo = PlayerInfo.getInstance();
+    playerInfo.getSkill(packet.getSkill1()).setRawValue((short) (packet.getSkill1Value()*10));
+    playerInfo.getSkill(packet.getSkill2()).setRawValue((short) (packet.getSkill2Value()*10));
+    playerInfo.getSkill(packet.getSkill3()).setRawValue((short) (packet.getSkill3Value()*10));
+    playerInfo.setName(packet.getName());
+    playerInfo.setSkinColor(packet.getSkinColor());
+    
     return new MultiPacket(        
-        new CharLocaleAndBodyDebugPacket(
-            playerInfo.getSerialId(),
-            playerInfo.getPosX(), 
-            playerInfo.getPosY(),
-            playerInfo.getPosZ(),
-            playerInfo.getDir()),
-            //TODO: do I need to send a DrawGamePlayer juyst after a CharocaleAndBodyDebug ?
-        new DrawGamePlayerPacket(
-            playerInfo.getSerialId(),
-            playerInfo.getPosX(), 
-            playerInfo.getPosY(),
-            playerInfo.getPosZ(),
-            playerInfo.getDir()),
+        new CharLocaleAndBodyDebugPacket(playerInfo),
+        //TODO: do I need to send a DrawGamePlayer juyst after a CharocaleAndBodyDebug ?
+        new DrawGamePlayerPacket(playerInfo),
         new LoginCompletePacket(),
-        new StatusBarInfoPacket(playerInfo.getSerialId()),
+        new StatusBarInfoPacket(playerInfo),
         new EnableLockedClientFeaturesPacket());
   }
 }

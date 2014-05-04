@@ -3,7 +3,7 @@ package com.foolver.juo.packetHandling.packets.processors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foolver.juo.PlayerInfo;
+import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.request.DoubleClickPacket;
 import com.foolver.juo.packetHandling.packets.response.EmptyPacket;
@@ -15,15 +15,14 @@ public class DoubleClickPacketProcessor implements PacketProcessor<DoubleClickPa
 
   @Override
   public Packet processPacket(DoubleClickPacket packet) {
+    PlayerInfo playerInfo = PlayerInfo.getInstance();
     Packet response;
     if (packet.getObjectId() == 0) {
       log.info("user clicked on itself (0), sending the paperdoll info..?");
-      PlayerInfo playerInfo = PlayerInfo.getInstance();
-      response = new OpenPaperdollPacket(0, (byte) 0x00, "The coolest player in the world");
+      response = new OpenPaperdollPacket(playerInfo.getSerialId(), (byte) 0x00, "The coolest player in the world");
     } else if (packet.getObjectId() == 0x80000000) {
       log.info("user clicked on itself (0x80000000), sending the paperdoll info..?");
-      PlayerInfo playerInfo = PlayerInfo.getInstance();
-      response = new OpenPaperdollPacket(0, (byte) 0x00, "The coolest player in the world");
+      response = new OpenPaperdollPacket(playerInfo.getSerialId(), (byte) 0x00, "The coolest player in the world");
     } else {
       response = new EmptyPacket();
     }

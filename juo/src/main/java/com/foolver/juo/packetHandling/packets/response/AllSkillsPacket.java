@@ -1,8 +1,19 @@
 package com.foolver.juo.packetHandling.packets.response;
 
+import com.foolver.juo.game.PlayerInfo;
+import com.foolver.juo.game.SkillModel;
+import com.foolver.juo.packetHandling.packets.utils.Skill;
+
 
 public class AllSkillsPacket extends AbstractResponsePacket {
   
+  private PlayerInfo playerInfo;
+  
+  public AllSkillsPacket(PlayerInfo playerInfo) {
+    super(false);
+    this.playerInfo = playerInfo;
+    allocateAndSetupBuffer();
+  }
   //  Skill Lock State
   //  0x0: Up
   //  0x1: Down
@@ -20,11 +31,12 @@ public class AllSkillsPacket extends AbstractResponsePacket {
     buffer.putShort((short) getBufferSize());
     buffer.put((byte)0x00); // 0x02
 
-    for(short i=1;i<52;i++){
-      buffer.putShort(i); // skill id 1 based
-      buffer.putShort((short)500); // skill value * 10
-      buffer.putShort((short)500); // raw value * 10
-      buffer.put((byte)0x00); // skill lock      
+    for(Skill skill : Skill.values()){
+      SkillModel skillModel = playerInfo.getSkill(skill);
+      buffer.putShort(skill.get1BasedValue()); // skill id 1 based
+      buffer.putShort(skillModel.getRawValue()); // skill value * 10
+      buffer.putShort(skillModel.getRawValue()); // raw value * 10
+      buffer.put(skillModel.getLockState().getValue()); // skill lock      
     }
     
     buffer.putShort((short)0);
@@ -32,7 +44,7 @@ public class AllSkillsPacket extends AbstractResponsePacket {
 
   @Override
   public int getBufferSize() {
-    return 6 + 51 * 7;
+    return 6 + Skill.values().length * 7;
   }
 
 }

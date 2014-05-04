@@ -1,14 +1,15 @@
 package com.foolver.juo.packetHandling.packets.response;
 
+import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.util.ByteUtil;
 
 public class StatusBarInfoPacket extends AbstractResponsePacket {
 
-  private int serialId;
+  private PlayerInfo playerInfo;
   
-  public StatusBarInfoPacket(int serialId){
+  public StatusBarInfoPacket(PlayerInfo playerInfo){
     super(false);
-    this.serialId = serialId;
+    this.playerInfo = playerInfo;
     allocateAndSetupBuffer();
   }
   
@@ -16,8 +17,8 @@ public class StatusBarInfoPacket extends AbstractResponsePacket {
   protected void fillBuffer() {  
     buffer.put((byte) 0x11);
     buffer.putShort((short)getBufferSize());
-    buffer.putInt(serialId); //player serial
-    buffer.put(ByteUtil.getPaddedBytesOfString("playername", 30));
+    buffer.putInt(playerInfo.getSerialId()); //player serial
+    buffer.put(ByteUtil.getPaddedBytesOfString(playerInfo.getName(), 30));
     buffer.putShort((short)255); // current hit points
     buffer.putShort((short)255); // max hit points
     buffer.put((byte) 0x00); // name change flag

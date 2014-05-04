@@ -62,17 +62,22 @@ public enum Skill {
     this.value = value;
   }
 
-  public short getValue() {
+  public short get0BasedValue() {
     return this.value;
+  }
+  
+  public short get1BasedValue() {
+    return (short) (get0BasedValue() + 1);
   }
 
   public static Skill fromValue(short s) {
       
     for (Skill d : values()) {
-      if (d.getValue() == s) {
+      if (d.get0BasedValue() == s) {
         return d;
       }
     }
     throw new IllegalArgumentException(String.format("unable to find the skill with id %s", s));
   }
+
 }

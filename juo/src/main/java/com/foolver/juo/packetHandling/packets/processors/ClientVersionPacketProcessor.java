@@ -1,6 +1,6 @@
 package com.foolver.juo.packetHandling.packets.processors;
 
-import com.foolver.juo.PlayerInfo;
+import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.response.ConnectToGameServerPacket;
 import com.foolver.juo.packetHandling.packets.response.LoginCompletePacket;
@@ -16,7 +16,7 @@ public class ClientVersionPacketProcessor implements PacketProcessor<ClientVersi
     return new MultiPacket(
         new ClientVersionPacket(packet.getVersion()),
         new LoginCompletePacket(),
-        new StatusBarInfoPacket(playerInfo.getSerialId()),
+        new StatusBarInfoPacket(playerInfo),
         new ConnectToGameServerPacket());
   }
 }

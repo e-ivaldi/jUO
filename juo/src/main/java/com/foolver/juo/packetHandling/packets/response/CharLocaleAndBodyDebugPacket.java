@@ -1,35 +1,27 @@
 package com.foolver.juo.packetHandling.packets.response;
 
-import com.foolver.juo.packetHandling.packets.utils.Direction;
+import com.foolver.juo.game.PlayerInfo;
 
 public class CharLocaleAndBodyDebugPacket extends AbstractResponsePacket {
 
-  private int serialId;
-  private short posX;
-  private short posY;
-  private byte posZ;
-  private Direction dir;
+  private PlayerInfo playerInfo;
 
-  public CharLocaleAndBodyDebugPacket(int serialId, short posX, short posY, byte posZ, Direction dir) {
+  public CharLocaleAndBodyDebugPacket(PlayerInfo playerInfo) {
     super(false);
-    this.serialId = serialId;
-    this.posX = posX;
-    this.posY = posY;
-    this.posZ = posZ;
-    this.dir = dir;
+    this.playerInfo = playerInfo;
     this.allocateAndSetupBuffer();
   }
 
   @Override
   public void fillBuffer() {
     buffer.put((byte) 0x1B); // draw game player
-    buffer.putInt(serialId); // serial
+    buffer.putInt(playerInfo.getSerialId()); // serial
     buffer.putInt(0); // unknown
     buffer.putShort((short) 400); // bodyType
-    buffer.putShort(posX); // xLoc
-    buffer.putShort(posY); // yLoc
-    buffer.put(posZ); // zloc
-    buffer.put(dir.getValue()); // direction
+    buffer.putShort(playerInfo.getPosX()); // xLoc
+    buffer.putShort(playerInfo.getPosY()); // yLoc
+    buffer.put(playerInfo.getPosZ()); // zloc
+    buffer.put(playerInfo.getDir().getValue()); // direction
     buffer.put((byte) 0x00); // unknown
     buffer.put((byte) 0xFF);
     buffer.put((byte) 0xFF);

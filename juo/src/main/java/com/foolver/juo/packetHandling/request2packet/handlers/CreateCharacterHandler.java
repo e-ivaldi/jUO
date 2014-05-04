@@ -1,11 +1,17 @@
 package com.foolver.juo.packetHandling.request2packet.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.request.CreateCharacterPacket;
+import com.foolver.juo.packetHandling.packets.utils.Skill;
 import com.foolver.juo.util.DataReader;
 
 public class CreateCharacterHandler extends AbstractRequestHandler<CreateCharacterPacket> {
 
+  private static final Logger log = LoggerFactory.getLogger(CreateCharacterHandler.class);
+  
   @Override
   public CreateCharacterPacket handle(DataReader dataReader) throws PacketHandlingException {
     return this.execute(() -> {
@@ -23,11 +29,11 @@ public class CreateCharacterHandler extends AbstractRequestHandler<CreateCharact
       byte strength = dataReader.readByte();
       byte dexterity = dataReader.readByte();
       byte intelligence = dataReader.readByte();
-      byte skill1 = dataReader.readByte();
+      Skill skill1 = Skill.fromValue(dataReader.readByte());
       byte skill1Value = dataReader.readByte();
-      byte skill2 = dataReader.readByte();
+      Skill skill2 = Skill.fromValue(dataReader.readByte());
       byte skill2Value = dataReader.readByte();
-      byte skill3 = dataReader.readByte();
+      Skill skill3 = Skill.fromValue(dataReader.readByte());
       byte skill3Value = dataReader.readByte();
       short skinColor = dataReader.readShort();
       short hairStyle = dataReader.readShort();
@@ -40,7 +46,15 @@ public class CreateCharacterHandler extends AbstractRequestHandler<CreateCharact
       int clientIp = dataReader.readInt();
       short shirtColor = dataReader.readShort();
       short pantsColor = dataReader.readShort();
-      return new CreateCharacterPacket();
+      log.info(String.format("skill1: %s, value: %s", skill1, skill1Value));
+      log.info(String.format("skill2: %s, value: %s", skill2, skill2Value));
+      log.info(String.format("skill3: %s, value: %s ", skill3, skill3Value));
+      return new CreateCharacterPacket(
+          charName,
+          skill1, skill1Value,
+          skill2, skill2Value,
+          skill3, skill3Value,
+          skinColor);
       });
 
   }

@@ -8,6 +8,8 @@ import java.util.concurrent.Executors;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.foolver.juo.game.PlayerInfo;
+
 public class PlayerInfoTest {
 
   @Test
