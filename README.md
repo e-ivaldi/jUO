@@ -5,4 +5,7 @@ Juo is (for the moment) a very basic proof of concept for a ultima online java s
 
 (the server works only for the client ver. 1.26.4 (patched to use a decrypted connection))
 
+Note: in order to start the server the following files *must* be copied into /src/main/resources before building the project:
+1) map0.mul
+
 ![alt tag](http://i.imgur.com/xHj4XF5.png)
