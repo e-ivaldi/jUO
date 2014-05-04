@@ -34,6 +34,7 @@ import com.foolver.juo.packetHandling.request2packet.handlers.SingleClickHandler
 import com.foolver.juo.packetHandling.request2packet.handlers.SpeechRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.UltimaMessengerHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.UnkownRequestHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.WarModeHandler;
 import com.foolver.juo.util.ByteUtil;
 
 public class RequestDispatcher {
@@ -69,6 +70,7 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0x22, new ResyncRequestHandler());
     requestHandlers.put((byte) 0xB8, new RequestCharProfileHandler());
     requestHandlers.put((byte) 0x3A, new SendSkillHandler());
+    requestHandlers.put((byte) 0x72, new WarModeHandler());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {

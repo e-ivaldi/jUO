@@ -19,5 +19,7 @@ public interface DataReader {
   short readShort() throws IOException;
 
   byte readByte() throws IOException;  
+  
+  boolean readBool() throws IOException;
 
 }

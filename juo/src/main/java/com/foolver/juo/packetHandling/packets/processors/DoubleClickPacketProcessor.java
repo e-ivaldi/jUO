@@ -20,8 +20,8 @@ public class DoubleClickPacketProcessor implements PacketProcessor<DoubleClickPa
       log.info("user clicked on itself (0), sending the paperdoll info..?");
       PlayerInfo playerInfo = PlayerInfo.getInstance();
       response = new OpenPaperdollPacket(0, (byte) 0x00, "The coolest player in the world");
-    } else if (packet.getObjectId() == -2147483648) {
-      log.info("user clicked on itself (-2147483648), sending the paperdoll info..?");
+    } else if (packet.getObjectId() == 0x80000000) {
+      log.info("user clicked on itself (0x80000000), sending the paperdoll info..?");
       PlayerInfo playerInfo = PlayerInfo.getInstance();
       response = new OpenPaperdollPacket(0, (byte) 0x00, "The coolest player in the world");
     } else {

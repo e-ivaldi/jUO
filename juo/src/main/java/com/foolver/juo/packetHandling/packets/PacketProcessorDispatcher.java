@@ -28,6 +28,7 @@ import com.foolver.juo.packetHandling.packets.processors.ServerListRemoveEntryPa
 import com.foolver.juo.packetHandling.packets.processors.SingleClickPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.SpeechRequestPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.UltimaMessengerPacketProcessor;
+import com.foolver.juo.packetHandling.packets.processors.WarModePacketProcessor;
 import com.foolver.juo.packetHandling.packets.request.DeleteCharacterPacket;
 import com.foolver.juo.packetHandling.packets.request.DoubleClickPacket;
 import com.foolver.juo.packetHandling.packets.request.GameServerLoginPacket;
@@ -48,6 +49,7 @@ import com.foolver.juo.packetHandling.packets.shared.CharacterMoveACKPacket;
 import com.foolver.juo.packetHandling.packets.shared.ClientVersionPacket;
 import com.foolver.juo.packetHandling.packets.shared.PingMessagePacket;
 import com.foolver.juo.packetHandling.packets.shared.RequestTipNoticePacket;
+import com.foolver.juo.packetHandling.packets.shared.WarModePacket;
 
 public class PacketProcessorDispatcher {
 
@@ -75,6 +77,7 @@ public class PacketProcessorDispatcher {
     packetProcessors.put(SingleClickPacket.class, new SingleClickPacketProcessor());
     packetProcessors.put(DoubleClickPacket.class, new DoubleClickPacketProcessor());
     packetProcessors.put(SendSkillPacket.class, new SendSkillPacketProcessor());
+    packetProcessors.put(WarModePacket.class, new WarModePacketProcessor());
   }
 
   @SuppressWarnings("rawtypes")

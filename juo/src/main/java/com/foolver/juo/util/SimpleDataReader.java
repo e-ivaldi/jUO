@@ -54,4 +54,9 @@ public class SimpleDataReader implements DataReader {
     skip(Integer.BYTES);    
   }
 
+  @Override
+  public boolean readBool() throws IOException {
+    return dataInputStream.readBoolean();
+  }
+
 }
