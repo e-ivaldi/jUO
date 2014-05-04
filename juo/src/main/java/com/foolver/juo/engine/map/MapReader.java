@@ -17,7 +17,7 @@ public class MapReader {
   private static final int BLOCKS_PER_MAP_IN_A_COLUMN = 8;
   private static final int BLOCKS_PER_MAP_IN_A_ROW = 8;
   private static final int BLOCK_WIDTH = MAP_WIDTH / BLOCKS_PER_MAP_IN_A_COLUMN;
-  private static final int BLOCK_HEIGHT = MAP_HEIGHT / BLOCKS_PER_MAP_IN_A_COLUMN;
+  private static final int BLOCK_HEIGHT = MAP_HEIGHT / BLOCKS_PER_MAP_IN_A_ROW;
   private static final int CELLS_PER_BLOCK_IN_A_COLUMN = 8;
   private static final int CELLS_PER_BLOCK_IN_A_ROW = 8;
   private static final int CELLS_PER_BLOCK = CELLS_PER_BLOCK_IN_A_COLUMN * CELLS_PER_BLOCK_IN_A_ROW;
