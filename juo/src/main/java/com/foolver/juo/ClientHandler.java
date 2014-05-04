@@ -1,5 +1,6 @@
 package com.foolver.juo;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -51,7 +52,9 @@ public class ClientHandler implements Runnable {
       while (!threadIsInterrupted()) {
         readInputAndWriteOutput();
       }
-    } catch (IOException e) {
+    } catch(EOFException e){
+      log.info(String.format("client %s disconnected", client.getLocalAddress()));
+    }catch (IOException e) {
       log.error("unable to read byte from the input stream", e);
     } catch (PacketHandlingException e) {
       log.error("problems happened during the packet handling..", e);
