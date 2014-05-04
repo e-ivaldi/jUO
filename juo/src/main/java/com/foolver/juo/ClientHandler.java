@@ -63,15 +63,14 @@ public class ClientHandler implements Runnable {
 
   @SuppressWarnings("unchecked")
   private void readInputAndWriteOutput() throws IOException, PacketHandlingException {
-    byte packetId = readPacketId();
-    if (isValidPacketId(packetId)) {
-      RequestHandler<?> requestHandler = requestDispatcher.dispatch(packetId);
-      Packet requestPacket = requestHandler.handle(dataReader);
-      PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
-      logPacketProcessorInfo(packetId, packetProcessor);
-      Packet responsePacket = packetProcessor.processPacket(requestPacket);
-      writeAndFlushTheResponsePacket(responsePacket);
-    }
+    byte packetId = readPacketId(); 
+    RequestHandler<?> requestHandler = requestDispatcher.dispatch(packetId);
+    Packet requestPacket = requestHandler.handle(dataReader);
+    PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
+    logPacketProcessorInfo(packetId, packetProcessor);
+    Packet responsePacket = packetProcessor.processPacket(requestPacket);
+    writeAndFlushTheResponsePacket(responsePacket);
+    
   }
 
   private void logPacketProcessorInfo(byte packetId, PacketProcessor<? extends Packet> packetProcessor) {
@@ -86,10 +85,6 @@ public class ClientHandler implements Runnable {
   private void killThread() {
     log.info("killing the thread");
     Thread.currentThread().interrupt();
-  }
-
-  private boolean isValidPacketId(byte packetId) {
-    return packetId != 0x00;
   }
 
   private byte readPacketId() throws IOException, PacketHandlingException {

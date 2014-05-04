@@ -4,7 +4,7 @@ import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.response.EmptyPacket;
 import com.foolver.juo.util.DataReader;
 
-public class RequestAssistance extends AbstractRequestHandler<EmptyPacket> {
+public class RequestAssistanceHandler extends AbstractRequestHandler<EmptyPacket> {
 
   @Override
   public EmptyPacket handle(DataReader dataReader) throws PacketHandlingException {

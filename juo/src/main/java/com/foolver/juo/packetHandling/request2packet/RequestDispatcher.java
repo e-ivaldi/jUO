@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foolver.juo.packetHandling.packets.Packet;
+import com.foolver.juo.packetHandling.packets.utils.Packets;
 import com.foolver.juo.packetHandling.request2packet.handlers.BooksHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.ClientSpyHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.ClientVersionHandler;
+import com.foolver.juo.packetHandling.request2packet.handlers.CreateCharacterHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.DeleteCharacterHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.DoubleClickHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.GameServerLoginHandler;
@@ -19,7 +21,7 @@ import com.foolver.juo.packetHandling.request2packet.handlers.LoginCharacterHand
 import com.foolver.juo.packetHandling.request2packet.handlers.LoginRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.MoveRequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.PingMessageHandler;
-import com.foolver.juo.packetHandling.request2packet.handlers.RequestAssistance;
+import com.foolver.juo.packetHandling.request2packet.handlers.RequestAssistanceHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestCharProfileHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestHandler;
 import com.foolver.juo.packetHandling.request2packet.handlers.RequestPlayerStatusHandler;
@@ -72,7 +74,8 @@ public class RequestDispatcher {
     requestHandlers.put((byte) 0xB8, new RequestCharProfileHandler());
     requestHandlers.put((byte) 0x3A, new SendSkillHandler());
     requestHandlers.put((byte) 0x72, new WarModeHandler());
-    requestHandlers.put((byte) 0x9B, new RequestAssistance());
+    requestHandlers.put((byte) 0x9B, new RequestAssistanceHandler());
+    requestHandlers.put(Packets.CREATE_CHARACTER.getValue(), new CreateCharacterHandler());
   }
 
   public RequestHandler<? extends Packet> dispatch(Byte packetId) {

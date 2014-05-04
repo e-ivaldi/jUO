@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.processors.ClientVersionPacketProcessor;
+import com.foolver.juo.packetHandling.packets.processors.CreateCharacterPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.DeleteCharacterPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.DoubleClickPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.EmptyPacketProcessor;
@@ -29,6 +30,7 @@ import com.foolver.juo.packetHandling.packets.processors.SingleClickPacketProces
 import com.foolver.juo.packetHandling.packets.processors.SpeechRequestPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.UltimaMessengerPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.WarModePacketProcessor;
+import com.foolver.juo.packetHandling.packets.request.CreateCharacterPacket;
 import com.foolver.juo.packetHandling.packets.request.DeleteCharacterPacket;
 import com.foolver.juo.packetHandling.packets.request.DoubleClickPacket;
 import com.foolver.juo.packetHandling.packets.request.GameServerLoginPacket;
@@ -78,6 +80,7 @@ public class PacketProcessorDispatcher {
     packetProcessors.put(DoubleClickPacket.class, new DoubleClickPacketProcessor());
     packetProcessors.put(SendSkillPacket.class, new SendSkillPacketProcessor());
     packetProcessors.put(WarModePacket.class, new WarModePacketProcessor());
+    packetProcessors.put(CreateCharacterPacket.class, new CreateCharacterPacketProcessor());
   }
 
   @SuppressWarnings("rawtypes")
