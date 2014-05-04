@@ -14,7 +14,7 @@ public class CreateCharacterPacketProcessor implements PacketProcessor<CreateCha
 
   @Override
   public Packet processPacket(CreateCharacterPacket packet) {
-    //TODO validate and use the data from the input packet
+    //TODO validate input data and use the data from the input packet
     PlayerInfo playerInfo = PlayerInfo.getInstance();
     return new MultiPacket(        
         new CharLocaleAndBodyDebugPacket(
