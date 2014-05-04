@@ -31,7 +31,8 @@ public class SimpleDataReader implements DataReader {
   public String readString(int length) throws IOException {
     byte[] buf = new byte[length];
     dataInputStream.readFully(buf, 0, length);
-    return new String(buf).trim().replaceAll(Character.toString('\0'), "");
+    String s = new String(buf);
+    return s.substring(0, s.indexOf('\0'));
   }
 
   @Override
