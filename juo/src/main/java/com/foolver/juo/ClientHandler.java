@@ -8,6 +8,7 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foolver.juo.engine.Engine;
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.PacketProcessorDispatcher;
@@ -29,11 +30,10 @@ public class ClientHandler implements Runnable {
   private PacketProcessorDispatcher packetProcessorDispatcher;
   private byte previousPacketId = 0x01;
 
-  public ClientHandler(Socket client, RequestDispatcher packetDispatcher,
-      PacketProcessorDispatcher packetProcessorDispatcher) {
+  public ClientHandler(Socket client, Engine engine) {
     this.client = client;
-    this.requestDispatcher = packetDispatcher;
-    this.packetProcessorDispatcher = packetProcessorDispatcher;
+    this.requestDispatcher = engine.getRequestDispatcher();
+    this.packetProcessorDispatcher = engine.getPacketProcessorDispatcher();
     setupStreams(client);
   }
 

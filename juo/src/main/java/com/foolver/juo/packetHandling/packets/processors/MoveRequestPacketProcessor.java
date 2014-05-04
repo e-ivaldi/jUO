@@ -3,6 +3,8 @@ package com.foolver.juo.packetHandling.packets.processors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foolver.juo.engine.Engine;
+import com.foolver.juo.engine.map.MapReader;
 import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.request.MoveRequestPacket;
@@ -13,11 +15,22 @@ public class MoveRequestPacketProcessor implements PacketProcessor<MoveRequestPa
 
   private static final Logger log = LoggerFactory.getLogger(MoveRequestPacketProcessor.class);
   
+  private MapReader mapReader;
+  
+  public MoveRequestPacketProcessor(MapReader mapReader) {
+    this.mapReader = mapReader;
+  }
+  
   @Override
   public Packet processPacket(MoveRequestPacket packet) {
     PlayerInfo playerInfo = PlayerInfo.getInstance();
-    Direction direction = packet.getDirection();
-    updatePlaerInfoPosition(playerInfo, direction);
+    Direction requestedDirection = packet.getDirection();
+    if(requestedDirection == playerInfo.getDir()){
+      updatePlaerInfoPosition(playerInfo, requestedDirection);
+      byte z = mapReader.getMapCoordinateInfo(playerInfo.getPosX(), playerInfo.getPosY());
+      log.info(String.format("position: %s,%s,%s", playerInfo.getPosX(), playerInfo.getPosY(), z));
+    }
+    playerInfo.setDir(requestedDirection);
     return new CharacterMoveACKPacket(packet.getSequenceNumber());
   }
 

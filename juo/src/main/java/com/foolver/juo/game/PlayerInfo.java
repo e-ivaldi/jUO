@@ -51,7 +51,7 @@ public class PlayerInfo {
       PlayerInfo playerInfo = new PlayerInfo(0);
       playerInfo.posX = 1496;
       playerInfo.posY = 1628;
-      playerInfo.posZ = 0x10;
+      playerInfo.posZ = 10;
       playerInfo.dir = Direction.EAST;
       return playerInfo;
     }

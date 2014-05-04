@@ -1,38 +1,27 @@
 package com.foolver.juo.packetHandling.packets.response;
 
-import com.foolver.juo.packetHandling.packets.utils.Direction;
+import com.foolver.juo.game.PlayerInfo;
 
 public class UpdatePlayerPacket extends AbstractResponsePacket {
 
-  private int serialId;
-  private short xLoc;
-  private short yLoc;
-  private byte zLoc;
-  Direction dir;
+  private PlayerInfo playerInfo;
   
-  public UpdatePlayerPacket(int serialId, short xLoc, short yLoc, byte zLoc, Direction dir){
+  public UpdatePlayerPacket(PlayerInfo playerInfo){
     super(false);
-    this.serialId = serialId;
-    this.xLoc = xLoc;
-    this.yLoc = yLoc;
-    this.zLoc = zLoc;
-    this.dir = dir;  
+    this.playerInfo = playerInfo;
     allocateAndSetupBuffer();
   }
  
   @Override
   protected void fillBuffer() {
     buffer.put((byte) 0x77); // packetId
-    buffer.putInt(serialId); // playerId
+    buffer.putInt(playerInfo.getSerialId());
     buffer.putShort((short)0); // model
-    buffer.putShort(xLoc); // xloc
-    buffer.putShort(yLoc); // yloc
-    buffer.put(zLoc); // zloc
-    if(dir == null){
-      dir = Direction.NORTH_WEST;
-    }
-    buffer.put(dir.getValue()); // direction
-    buffer.putShort((short)0); // hue/skin color
+    buffer.putShort(playerInfo.getPosX());
+    buffer.putShort(playerInfo.getPosY());
+    buffer.put(playerInfo.getPosZ()); 
+    buffer.put(playerInfo.getDir().getValue()); 
+    buffer.putShort(playerInfo.getSkinColor());
     buffer.put((byte) 0x00); // status flag
     buffer.put((byte) 0x00); // highlight color    
   }

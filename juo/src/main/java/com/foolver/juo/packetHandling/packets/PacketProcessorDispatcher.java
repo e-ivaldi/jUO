@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foolver.juo.engine.map.MapReader;
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.processors.ClientVersionPacketProcessor;
 import com.foolver.juo.packetHandling.packets.processors.CreateCharacterPacketProcessor;
@@ -58,7 +59,7 @@ public class PacketProcessorDispatcher {
   private static final Logger log = LoggerFactory.getLogger(PacketProcessorDispatcher.class);
   private static final Map<Class<? extends Packet>, PacketProcessor<? extends Packet>> packetProcessors = new HashMap<>();
 
-  public PacketProcessorDispatcher() {
+  public PacketProcessorDispatcher(MapReader mapReader) {
     packetProcessors.put(EmptyPacket.class, new EmptyPacketProcessor());
     packetProcessors.put(LoginRequestPacket.class, new LoginRequestPacketProcessor());
     packetProcessors.put(RestartVersionPacket.class, new RestartVersionPacketProcessor());
@@ -68,7 +69,7 @@ public class PacketProcessorDispatcher {
     packetProcessors.put(GameServerLoginPacket.class, new GameServerLoginPacketProcessor());
     packetProcessors.put(LoginCharacterPacket.class, new LoginCharacterPacketProcessor());
     packetProcessors.put(DeleteCharacterPacket.class, new DeleteCharacterPacketProcessor());
-    packetProcessors.put(MoveRequestPacket.class, new MoveRequestPacketProcessor());
+    packetProcessors.put(MoveRequestPacket.class, new MoveRequestPacketProcessor(mapReader));
     packetProcessors.put(SpeechRequestPacket.class, new SpeechRequestPacketProcessor());
     packetProcessors.put(PingMessagePacket.class, new PingMessagePacketProcessor());
     packetProcessors.put(RequestTipNoticePacket.class, new RequestTipNoticePacketProcessor());

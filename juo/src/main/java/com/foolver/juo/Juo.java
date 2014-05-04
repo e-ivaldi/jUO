@@ -8,19 +8,20 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.foolver.juo.packetHandling.packets.PacketProcessorDispatcher;
-import com.foolver.juo.packetHandling.request2packet.RequestDispatcher;
+import com.foolver.juo.engine.Engine;
+import com.foolver.juo.engine.exception.EngineException;
 
 public class Juo {
 
   private static final Logger log = LoggerFactory.getLogger(Juo.class);
-  private static final RequestDispatcher requestDispatcher = new RequestDispatcher();
-  private static final PacketProcessorDispatcher packetProcessorDispatcher = new PacketProcessorDispatcher();
 
   private static final int MAX_THREADS = 1000;
+  
+  private static Engine engine;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws EngineException {
     ExecutorService executor = Executors.newFixedThreadPool(MAX_THREADS);
+    engine = new Engine();
     createServerSocketAndWaitForClients(executor);
   }
 
@@ -36,10 +37,10 @@ public class Juo {
     }
   }
 
-  private static void waitForClients(ServerSocket serverSocket, ExecutorService executor) throws IOException {
+  private static void waitForClients(ServerSocket serverSocket, ExecutorService executor) throws IOException {    
     log.info("Waiting for clients..");
     while (true) {
-      Runnable clientHandler = new ClientHandler(serverSocket.accept(), requestDispatcher, packetProcessorDispatcher);
+      Runnable clientHandler = new ClientHandler(serverSocket.accept(), engine);
       executor.execute(clientHandler);
     }
   }
