@@ -47,7 +47,7 @@ public class UpdateMobileStatusPacket extends AbstractResponsePacket {
 
   @Override
   public int getBufferSize() {
-    return (status == 0x01) ? 8 : 12;
+    return (status == 0x01) ? 12 : 8;
   }
 
 }

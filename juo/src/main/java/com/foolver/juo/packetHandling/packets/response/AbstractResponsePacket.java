@@ -2,10 +2,15 @@ package com.foolver.juo.packetHandling.packets.response;
 
 import java.nio.ByteBuffer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.foolver.juo.packetHandling.packets.Packet;
 
 public abstract class AbstractResponsePacket implements Packet {
 
+  private static final Logger log = LoggerFactory.getLogger(AbstractResponsePacket.class);
+  
   protected ByteBuffer buffer;
 
   public AbstractResponsePacket() {
@@ -21,6 +26,8 @@ public abstract class AbstractResponsePacket implements Packet {
   protected void allocateAndSetupBuffer(){
     allocateBuffer();
     fillBuffer();
+    log.debug(String.format("remaining: %s, position: %s",buffer.hasRemaining(), buffer.position()));
+    
   }
   
   protected void allocateBuffer(){

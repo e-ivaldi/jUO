@@ -20,7 +20,7 @@ public class ClientVersionPacket extends AbstractResponsePacket {
 
   @Override
   public int getBufferSize() {
-    return 9;
+    return 3;
   }
 
   public String getVersion() {
