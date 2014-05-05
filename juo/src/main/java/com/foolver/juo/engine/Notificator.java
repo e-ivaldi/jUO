@@ -14,12 +14,12 @@ public class Notificator {
   private List<ClientHandler> handlers = new ArrayList<>();
 
   public void onMove(PlayerInfo mover) {
-    Packet packet = new MultiPacket(new DrawEquippedMob(mover));
-    for (ClientHandler handler : handlers) {
-      if (!handler.getPlayerInfo().equals(mover)) {
-        handler.addToResponseQueue(packet);
-      }
-    }
+    Packet packet = new MultiPacket(new DrawEquippedMob(mover));    
+    // to use the parallel stream I should guarantee
+    // that the collection is not modified during the logic:
+    // we'll see if it worths th lock the list up
+    handlers.stream().filter(h->!h.getPlayerInfo().equals(mover)).forEach(
+        h->h.addToResponseQueue(packet));  
   }
 
   // TODO add a method to unregister the handler and call it from the handler
