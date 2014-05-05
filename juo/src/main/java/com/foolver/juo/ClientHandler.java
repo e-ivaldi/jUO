@@ -4,6 +4,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,8 @@ public class ClientHandler implements Runnable {
   private OutputStream os;
   private RequestDispatcher requestDispatcher;
   private PacketProcessorDispatcher packetProcessorDispatcher;
+  private BlockingQueue<Packet> responseQueue = new LinkedBlockingDeque<>();
+  private Thread queueManagerThread;
 
   public ClientHandler(Socket client, Engine engine) {
     this.client = client;
@@ -46,33 +50,55 @@ public class ClientHandler implements Runnable {
   }
 
   public void run() {
+    startQueueManager();
     try {
       skeepSeedPacket();
-      while (!threadIsInterrupted()) {
+      while (!Thread.currentThread().isInterrupted()) {
         readInputAndWriteOutput();
       }
-    } catch(EOFException e){
+    } catch (EOFException e) {
       log.info(String.format("client %s disconnected", client.getLocalAddress()));
-    }catch (IOException e) {
+    } catch (IOException e) {
       log.error("unable to read byte from the input stream", e);
     } catch (PacketHandlingException e) {
       log.error("problems happened during the packet handling..", e);
     } finally {
       log.info("closing the socket connection");
       closeClientSocket();
+      queueManagerThread.interrupt();
     }
+  }
+
+  private void startQueueManager() {
+    queueManagerThread = new Thread(() -> {
+      while (!Thread.currentThread().isInterrupted()) {
+        Packet p;
+        try {
+          p = responseQueue.take();
+          if (p.hasBytes()) {
+            log.info(String.format("sending packet: %s", ByteUtil.getPrintable(p.getBytes())));
+            os.write(p.getBytes());
+            os.flush();
+          }
+        } catch (IOException e) {
+          log.error("unable to write the packet to the output stream");
+        } catch (Exception e) {
+          Thread.currentThread().interrupt();
+        }
+      }
+    });
+    queueManagerThread.start();
   }
 
   @SuppressWarnings("unchecked")
   private void readInputAndWriteOutput() throws IOException, PacketHandlingException {
-    byte packetId = readPacketId(); 
+    byte packetId = readPacketId();
     RequestHandler<?> requestHandler = requestDispatcher.dispatch(packetId);
     Packet requestPacket = requestHandler.handle(dataReader);
     PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
     logPacketProcessorInfo(packetId, packetProcessor);
     Packet responsePacket = packetProcessor.processPacket(requestPacket);
-    writeAndFlushTheResponsePacket(responsePacket);
-    
+    responseQueue.add(responsePacket);
   }
 
   private void logPacketProcessorInfo(byte packetId, PacketProcessor<? extends Packet> packetProcessor) {
@@ -86,24 +112,14 @@ public class ClientHandler implements Runnable {
 
   private byte readPacketId() throws IOException, PacketHandlingException {
     byte packetId = dataReader.readByte();
-    log.info(String.format("read packet: %s", ByteUtil.getPrintable(packetId))); 
+    log.info(String.format("read packet: %s", ByteUtil.getPrintable(packetId)));
     return packetId;
-  }
-
-  private void writeAndFlushTheResponsePacket(Packet responsePacket) throws IOException {
-    if (responsePacket.hasBytes()) {
-      log.info(String.format("sending packet: %s", ByteUtil.getPrintable(responsePacket.getBytes())));
-      os.write(responsePacket.getBytes());
-      os.flush();
-    }
-  }
-
-  private boolean threadIsInterrupted() {
-    return Thread.currentThread().isInterrupted();
   }
 
   private void closeClientSocket() {
     try {
+      client.shutdownInput();
+      client.shutdownOutput();
       client.close();
     } catch (IOException e) {
       log.error("unable to shutdown the socket");
