@@ -13,8 +13,7 @@ import com.foolver.juo.packetHandling.packets.special.MultiPacket;
 public class LoginCharacterPacketProcessor implements PacketProcessor<LoginCharacterPacket> {
 
   @Override
-  public Packet processPacket(LoginCharacterPacket packet) {
-    PlayerInfo playerInfo = PlayerInfo.getInstance();
+  public Packet processPacket(PlayerInfo playerInfo, LoginCharacterPacket packet) {
     return new MultiPacket(        
         new CharLocaleAndBodyDebugPacket(playerInfo),
         //TODO: do I need to send a DrawGamePlayer juyst after a CharocaleAndBodyDebug ?

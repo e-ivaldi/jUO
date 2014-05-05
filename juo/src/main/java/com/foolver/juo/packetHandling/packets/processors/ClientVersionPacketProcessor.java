@@ -11,8 +11,7 @@ import com.foolver.juo.packetHandling.packets.special.MultiPacket;
 public class ClientVersionPacketProcessor implements PacketProcessor<ClientVersionPacket> {
 
   @Override
-  public Packet processPacket(ClientVersionPacket packet) {
-    PlayerInfo playerInfo = PlayerInfo.getInstance();        
+  public Packet processPacket(PlayerInfo playerInfo, ClientVersionPacket packet) {
     return new MultiPacket(
         new ClientVersionPacket(packet.getVersion()),
         new LoginCompletePacket(),

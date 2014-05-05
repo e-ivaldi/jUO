@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.foolver.juo.engine.Engine;
+import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.packetHandling.exception.PacketHandlingException;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.PacketProcessorDispatcher;
@@ -32,11 +33,14 @@ public class ClientHandler implements Runnable {
   private PacketProcessorDispatcher packetProcessorDispatcher;
   private BlockingQueue<Packet> responseQueue = new LinkedBlockingDeque<>();
   private Thread queueManagerThread;
+  private PlayerInfo playerInfo;
 
   public ClientHandler(Socket client, Engine engine) {
+    this.playerInfo = new PlayerInfo();
     this.client = client;
     this.requestDispatcher = engine.getRequestDispatcher();
     this.packetProcessorDispatcher = engine.getPacketProcessorDispatcher();
+    engine.getWorld().registerClientHandler(this);
     setupStreams(client);
   }
 
@@ -69,6 +73,10 @@ public class ClientHandler implements Runnable {
     }
   }
 
+  public void addToResponseQueue(Packet responsePacket) {
+    responseQueue.add(responsePacket);
+  }
+  
   private void startQueueManager() {
     queueManagerThread = new Thread(() -> {
       while (!Thread.currentThread().isInterrupted()) {
@@ -97,8 +105,8 @@ public class ClientHandler implements Runnable {
     Packet requestPacket = requestHandler.handle(dataReader);
     PacketProcessor<Packet> packetProcessor = packetProcessorDispatcher.getPacketProcessor(requestPacket);
     logPacketProcessorInfo(packetId, packetProcessor);
-    Packet responsePacket = packetProcessor.processPacket(requestPacket);
-    responseQueue.add(responsePacket);
+    Packet responsePacket = packetProcessor.processPacket(playerInfo, requestPacket);
+    addToResponseQueue(responsePacket);
   }
 
   private void logPacketProcessorInfo(byte packetId, PacketProcessor<? extends Packet> packetProcessor) {
@@ -124,6 +132,10 @@ public class ClientHandler implements Runnable {
     } catch (IOException e) {
       log.error("unable to shutdown the socket");
     }
+  }
+
+  public PlayerInfo getPlayerInfo() {
+    return playerInfo;
   }
 
 }

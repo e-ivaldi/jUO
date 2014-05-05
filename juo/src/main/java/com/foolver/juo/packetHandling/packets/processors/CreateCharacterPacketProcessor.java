@@ -11,16 +11,17 @@ import com.foolver.juo.packetHandling.packets.response.StatusBarInfoPacket;
 import com.foolver.juo.packetHandling.packets.special.MultiPacket;
 
 public class CreateCharacterPacketProcessor implements PacketProcessor<CreateCharacterPacket> {
-
+  
   @Override
-  public Packet processPacket(CreateCharacterPacket packet) {
+  public Packet processPacket(PlayerInfo playerInfo, CreateCharacterPacket packet) {
     //TODO validate input data and use the data from the input packet
-    PlayerInfo playerInfo = PlayerInfo.getInstance();
     playerInfo.getSkill(packet.getSkill1()).setRawValue((short) (packet.getSkill1Value()*10));
     playerInfo.getSkill(packet.getSkill2()).setRawValue((short) (packet.getSkill2Value()*10));
     playerInfo.getSkill(packet.getSkill3()).setRawValue((short) (packet.getSkill3Value()*10));
     playerInfo.setName(packet.getName());
     playerInfo.setSkinColor(packet.getSkinColor());
+    
+    //TODO: set to this player info that it's in game now
     
     return new MultiPacket(        
         new CharLocaleAndBodyDebugPacket(playerInfo),

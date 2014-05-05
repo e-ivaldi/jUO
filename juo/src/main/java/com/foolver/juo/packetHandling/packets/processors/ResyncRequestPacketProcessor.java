@@ -8,8 +8,8 @@ import com.foolver.juo.packetHandling.packets.shared.CharacterMoveACKPacket;
 public class ResyncRequestPacketProcessor implements PacketProcessor<CharacterMoveACKPacket> {
 
   @Override
-  public Packet processPacket(CharacterMoveACKPacket packet) {
-    return new DrawGamePlayerPacket(PlayerInfo.getInstance());
+  public Packet processPacket(PlayerInfo playerInfo, CharacterMoveACKPacket packet) {
+    return new DrawGamePlayerPacket(playerInfo);
   }
 
 }

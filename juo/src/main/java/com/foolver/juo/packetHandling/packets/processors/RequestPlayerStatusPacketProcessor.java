@@ -18,14 +18,13 @@ public class RequestPlayerStatusPacketProcessor implements PacketProcessor<Reque
   private static final byte REQUEST_SKILL = 0x05;
 
   @Override
-  public Packet processPacket(RequestPlayerStatusPacket packet) {
+  public Packet processPacket(PlayerInfo playerInfo, RequestPlayerStatusPacket packet) {
     log.info(String.format("Request player status of type: %s", packet.getStatus()));
-    return prepareResponse(packet);
+    return prepareResponse(playerInfo, packet);
   }
 
-  private Packet prepareResponse(RequestPlayerStatusPacket packet) {
+  private Packet prepareResponse(PlayerInfo playerInfo,RequestPlayerStatusPacket packet) {
     Packet response;
-    PlayerInfo playerInfo = PlayerInfo.getInstance();
     if (packet.getStatus() == BASIC_STATUS) {
       response = new StatusBarInfoPacket(playerInfo);
     } else { // request skill

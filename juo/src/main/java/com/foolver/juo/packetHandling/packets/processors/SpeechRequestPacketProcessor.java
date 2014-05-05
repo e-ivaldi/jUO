@@ -9,10 +9,10 @@ import com.foolver.juo.packetHandling.packets.response.EmptyPacket;
 public class SpeechRequestPacketProcessor implements PacketProcessor<SpeechRequestPacket> {
 
   @Override
-  public Packet processPacket(SpeechRequestPacket packet) {
+  public Packet processPacket(PlayerInfo playerInfo, SpeechRequestPacket packet) {
     if (packet.getText().startsWith(".send")) {
       // return new SendSpeechPacket((byte) 0x01, "Welcome to JUO!");
-      PlayerInfo playerInfo = PlayerInfo.getInstance();
+ 
       String cmds[] = packet.getText().split(" ");
       if (cmds.length == 4) {
         short posX = Short.parseShort(cmds[1]);
@@ -21,7 +21,6 @@ public class SpeechRequestPacketProcessor implements PacketProcessor<SpeechReque
         playerInfo.setPosX(posX);
         playerInfo.setPosY(posY);
         playerInfo.setPosZ(posZ);
-        //return new UpdatePlayerPacket(playerInfo);
         return new DrawGamePlayerPacket(playerInfo);
       }
     }

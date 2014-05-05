@@ -14,8 +14,7 @@ public class DoubleClickPacketProcessor implements PacketProcessor<DoubleClickPa
   private final static Logger log = LoggerFactory.getLogger(DoubleClickPacketProcessor.class);
 
   @Override
-  public Packet processPacket(DoubleClickPacket packet) {
-    PlayerInfo playerInfo = PlayerInfo.getInstance();
+  public Packet processPacket(PlayerInfo playerInfo, DoubleClickPacket packet) {
     Packet response;
     if (packet.getObjectId() == 0) {
       log.info("user clicked on itself (0), sending the paperdoll info..?");
