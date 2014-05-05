@@ -28,7 +28,6 @@ public class ClientHandler implements Runnable {
   private OutputStream os;
   private RequestDispatcher requestDispatcher;
   private PacketProcessorDispatcher packetProcessorDispatcher;
-  private byte previousPacketId = 0x01;
 
   public ClientHandler(Socket client, Engine engine) {
     this.client = client;
@@ -85,19 +84,9 @@ public class ClientHandler implements Runnable {
     dataReader.skip(4);
   }
 
-  private void killThread() {
-    log.info("killing the thread");
-    Thread.currentThread().interrupt();
-  }
-
   private byte readPacketId() throws IOException, PacketHandlingException {
     byte packetId = dataReader.readByte();
-    log.info(String.format("read packet: %s", ByteUtil.getPrintable(packetId)));
-    if (packetId == 0 && previousPacketId == 0) {
-      log.info("client disconnected, killing the thread..");
-      killThread();
-    }
-    previousPacketId = packetId;
+    log.info(String.format("read packet: %s", ByteUtil.getPrintable(packetId))); 
     return packetId;
   }
 
