@@ -23,8 +23,10 @@ public class PlayerInfo {
   private short skinColor;
   private Map<Skill, SkillModel> skills;
 
-  private PlayerInfo(int serialId) {
-    this.serialId = serialId;
+  private int serialId;
+  private int internalSerialId;
+
+  private PlayerInfo() {
     this.skills = new HashMap<>();
     setupSkills();
   }
@@ -48,7 +50,9 @@ public class PlayerInfo {
       log.info(String.format("rnd created for the player: %s", randomSerial));
       // TODO: mmm need to check the packet that's not handling the serial
       // correctly
-      PlayerInfo playerInfo = new PlayerInfo(0);
+      PlayerInfo playerInfo = new PlayerInfo();
+      playerInfo.serialId = 0;
+      playerInfo.internalSerialId = randomSerial;
       playerInfo.posX = 1496;
       playerInfo.posY = 1628;
       playerInfo.posZ = 10;
@@ -61,10 +65,12 @@ public class PlayerInfo {
     return instance.get();
   }
 
-  private int serialId;
-
   public int getSerialId() {
     return serialId;
+  }
+
+  public int getInternalSerialId() {
+    return internalSerialId;
   }
 
   public short getPosX() {
@@ -128,10 +134,10 @@ public class PlayerInfo {
     return skills.get(skill);
   }
 
-  public void setName(String name){
+  public void setName(String name) {
     this.name = name;
   }
-  
+
   public String getName() {
     return name;
   }
