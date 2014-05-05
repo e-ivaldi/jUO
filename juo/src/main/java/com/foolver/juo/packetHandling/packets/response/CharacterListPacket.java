@@ -24,8 +24,8 @@ public class CharacterListPacket extends AbstractResponsePacket {
     buffer.put((byte) 0xa9); // packetId
     buffer.putShort((short) getBufferSize()); // length
     buffer.put((byte) 0x05); // numChars
-    buffer.put(ByteUtil.getPaddedBytesOfString("", 30)); // name acc1
-    buffer.put(ByteUtil.getPaddedBytesOfString("", 30)); // name acc1
+    buffer.put(ByteUtil.getPaddedBytesOfString("player1", 30)); // name acc1
+    buffer.put(ByteUtil.getPaddedBytesOfString("nopass", 30)); // name acc1
     buffer.put(ByteUtil.getPaddedBytesOfString("", 30)); // name acc1
     buffer.put(ByteUtil.getPaddedBytesOfString("", 30)); // name acc1
     buffer.put(ByteUtil.getPaddedBytesOfString("", 30)); // name acc1
