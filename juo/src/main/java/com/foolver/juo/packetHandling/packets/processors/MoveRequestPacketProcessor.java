@@ -67,7 +67,7 @@ public class MoveRequestPacketProcessor implements PacketProcessor<MoveRequestPa
       log.error("wrong direction!!!");
       break;
     }
-    byte posZ = mapReader.getMapCoordinateInfo(playerInfo.getPosX(), playerInfo.getPosY());
+    byte posZ = mapReader.getCellAltitude(playerInfo.getPosX(), playerInfo.getPosY());
     playerInfo.setPosZ(posZ);
   }
 }
