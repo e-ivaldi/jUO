@@ -20,15 +20,12 @@ public class CharLocaleAndBodyDebugPacket extends AbstractResponsePacket {
     buffer.putShort((short) 400); // bodyType
     buffer.putShort(playerInfo.getPosX()); // xLoc
     buffer.putShort(playerInfo.getPosY()); // yLoc
+    buffer.put((byte)0x00); // skin color?
     buffer.put(playerInfo.getPosZ()); // zloc
-    buffer.put(playerInfo.getDir().getValue()); // direction
-    buffer.put((byte) 0x00); // unknown
-    buffer.put((byte) 0xFF);
-    buffer.put((byte) 0xFF);
-    buffer.put((byte) 0xFF);
-    buffer.put((byte) 0xFF);
-    buffer.putShort((short) 0);
-    buffer.putShort((short) 0);
+    buffer.put(playerInfo.getDir().getValue()); // direction   
+    buffer.putInt(0); // unknown
+    buffer.putInt(0); // unknown
+    buffer.put((byte)0x00); // unknown
     buffer.putShort((short) 6144); // map width
     buffer.putShort((short) 4096); // map height
     buffer.putShort((short) 0); // unknown
