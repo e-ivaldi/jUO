@@ -4,7 +4,7 @@ public class UpdateMobileStatusPacket extends AbstractResponsePacket {
 
   private int serialId;
   private byte status;
-  private int attackerSerial = -1;
+  private int attackerSerial = 0;
 
   public UpdateMobileStatusPacket(int playerSerial, byte status) {
     this(playerSerial, status, -1);
@@ -40,14 +40,12 @@ public class UpdateMobileStatusPacket extends AbstractResponsePacket {
     buffer.putShort((short) getBufferSize());
     buffer.putInt(serialId);
     buffer.put(status);
-    if (status == 0x01) {
-      buffer.putInt(attackerSerial);
-    }
+    buffer.putInt(attackerSerial);
   }
 
   @Override
   public int getBufferSize() {
-    return (status == 0x01) ? 8 : 12;
+    return 12;
   }
 
 }
