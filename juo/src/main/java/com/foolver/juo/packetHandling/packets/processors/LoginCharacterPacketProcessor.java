@@ -4,6 +4,7 @@ import com.foolver.juo.game.PlayerInfo;
 import com.foolver.juo.packetHandling.packets.Packet;
 import com.foolver.juo.packetHandling.packets.request.LoginCharacterPacket;
 import com.foolver.juo.packetHandling.packets.response.CharLocaleAndBodyDebugPacket;
+import com.foolver.juo.packetHandling.packets.response.CharLocaleAndBodyForLoginPlayerPacket;
 import com.foolver.juo.packetHandling.packets.response.DrawGamePlayerPacket;
 import com.foolver.juo.packetHandling.packets.response.EnableLockedClientFeaturesPacket;
 import com.foolver.juo.packetHandling.packets.response.LoginCompletePacket;
@@ -19,7 +20,6 @@ public class LoginCharacterPacketProcessor implements PacketProcessor<LoginChara
         //TODO: do I need to send a DrawGamePlayer juyst after a CharocaleAndBodyDebug ?
         new DrawGamePlayerPacket(playerInfo),
         new LoginCompletePacket(),
-        new StatusBarInfoPacket(playerInfo),
-        new EnableLockedClientFeaturesPacket());
+        new StatusBarInfoPacket(playerInfo));
   }
 }
